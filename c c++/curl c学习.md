@@ -1,0 +1,3 @@
+CURLOPT_URL 是在启动传输之前必须设置的唯一选项。设置URL curl_easy_perform函数的参数  
+返回码为302，表示重定向 设置CURLOPT_FOLLOWLOCATION为true，则会跟踪爬取重定向页面，否则，不会跟踪重定向页面。
+CURLOPT_HTTPHEADER 设置HTTP头(头格式 struct curl_slist* headers) 构建HTTP报文头函数curl_slist_append
