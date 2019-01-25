@@ -17,7 +17,7 @@
 
 # 命令
 
-    (gdb) start                         //开始调试
+    (gdb) start                          //开始调试
     (gdb) n                             //一条一条执行
     (gdb) step/s                        //执行下一条，如果函数进入函数
     (gdb) backtrace/bt                  //查看函数调用栈帧
