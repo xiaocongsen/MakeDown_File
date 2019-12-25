@@ -48,6 +48,7 @@ I69sPD9xZRt+EciXVQfybI/2SYeAdXMm1B7tHCcFlOxeUgqYV03VEqiC0jVMwRCd
 AgMBAAE=
 -----END PUBLIC KEY-----
 ```
+
 ## 第三步
     在命令行输入 sudo spctl --master-disable 开启任何来源
 

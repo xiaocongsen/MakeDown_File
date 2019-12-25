@@ -15,12 +15,14 @@
 
     gdb 程序名 ./core   
 
-# 命令
+
+
+# 命令  
 
     (gdb) start                          //开始调试
     (gdb) n                             //一条一条执行
     (gdb) step/s                        //执行下一条，如果函数进入函数
-    (gdb) backtrace/bt                  //查看函数调用栈帧
+    (gdb) backtrace/bt                  //查看函数调用栈帧n
     (gdb) info/i locals                 //查看当前栈帧局部变量
     (gdb) frame/f                       //选择栈帧，再查看局部变量
     (gdb) print/p                       //打印变量的值

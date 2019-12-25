@@ -92,3 +92,25 @@ docker build -t typeecho:0.1 .
 
 已卒
 
+
+
+docker run -d --name=typecho-blog --restart always --mount type=tmpfs,destination=/tmp -v /srv/http/typecho:/data -e PHP_TZ=Asia/Shanghai -e PHP_MAX_EXECUTION_TIME=600 -p 10086:80 80x86/typecho:amd64
+docker run -itd --name mysql-blog -p 3306:3306 -e MYSQL_ROOT_PASSWORD=XIAO2321ml mysql
+
+docker run -d --name=typecho-blog --network testnet --network-alias typecho-blog --restart always --mount type=tmpfs,destination=/tmp -v /srv/http/typecho:/data -e PHP_TZ=Asia/Shanghai -e PHP_MAX_EXECUTION_TIME=600 -p 10086:80 80x86/typecho:amd64
+docker run -itd --name mysql-blog --network testnet --network-alias mysql-blog -p 3306:3306 -e MYSQL_ROOT_PASSWORD=XIAO2321ml mysql:5.7.28
+
+
+
+docker run --name my-nginx -p 8080:80 -v /data/www:/er/www -v /data/conf/conf.d:/etc/nginx/conf.d -d nginx
+
+docker run --name my-php -d -v /Users/xiaocs/Desktop/www:/var/www/html:ro php:fpm                                  //ro 表示只读
+docker run --name my-nginx -p 80:80 -d -v /Users/xiaocs/Desktop/www:/usr/share/nginx/html:ro -v /Users/xiaocs/Desktop/conf/:/etc/nginx/conf.d:ro --link my-php:php nginx
+docker run -p 3306:3306 --name my-mysql -v /Users/xiaocs/Desktop/conf/mysql:/etc/mysql -v /Users/xiaocs/Desktop/logs:/logs -v /Users/xiaocs/Desktop/data:/mysql_data -e MYSQL_ROOT_PASSWORD=123456 -d mysql
+docker run -p 3306:3306 --name my-mysql -v /Users/xiaocs/Desktop/logs:/logs -e MYSQL_ROOT_PASSWORD=123456 -d --link my-php mysql
+
+
+
+
+docker run --name my-php -p 9000:9000 -v /Users/xiaocs/Desktop/www:/var/www/html:ro -v /Users/xiaocs/Desktop/conf/php:/usr/local/etc/php --link my-mysql:mysql -d php:fpm
+docker run --name my-nginx -p 80:80 -d -v /Users/xiaocs/Desktop/www:/usr/share/nginx/html:ro -v /Users/xiaocs/Desktop/conf/:/etc/nginx/conf.d:ro --link my-php:php nginx
