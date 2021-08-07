@@ -1,3 +1,37 @@
+# shell语法
+```shell
+if  [ ! -n "$1" ] ;then         #判断该变量是否为空
+        echo "没有输入参数1"
+        exit 1
+fi
+
+for i in $(seq $end -1 $begin)              #begin=15 end=18   则18 17 16 15    $(seq $var -1 1)即从var到1
+do
+    echo "输出 倒数数 54321"
+done
+
+var=$(ls -l)        #获取命令执行后输出的字符串(没有换行)
+
+ls -al | sed 's/-//g'       #删除所有的-
+
+
+let begin-=1    #变量计算
+```
+
+# AWK
+```shell
+lsblk | awk 'NR==1'             #获取第一行
+lsblk | awk 'END{print}'        #获取最后一行
+ls -l | awk -F " Apr " '{print $2}'   #每一行以 Apr 分割成多组 输出第2组
+ls -l | awk -F " Apr " '{print $2}' | wc -l     #输出后通过wc -l计算出有多少行数据
+```
+
+# sed
+```shell
+lsblk | sed -n '/ceph/='          #获取出现关键字ceph的行数
+
+```
+
 # 杀死所有进程
 ps -efww|grep a.out |grep -v grep|cut -c 9-15|xargs kill -9
 echo "" > ddd

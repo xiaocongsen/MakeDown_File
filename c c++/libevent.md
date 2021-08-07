@@ -23,3 +23,16 @@
     这一步相当于调用 Reactor::register_handler()函数注册事件。
 第五步 程序进入无限循环，等待就绪事件并执行事件处理
     event_base_dispatch(base);  
+
+
+
+# 坑
+    新连上了的socket不应该调取read 应该加入监听等待事件触发， 不然用户连上不发数据就堵塞了
+
+
+# 字节序
+    网络字节序是大端
+    htonl 将主机uint转换为网络字节序;
+    htons 将主机ushort转换为网络字节序
+    ntohl 将网络字节序uint转换为主机字节序
+    ntohs 将网络字节序ushort转换为主机字节序

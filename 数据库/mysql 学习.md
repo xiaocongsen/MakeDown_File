@@ -36,3 +36,21 @@ show slave status\G
 
 当slave_io_running和slave_sql_running为yes时代表同步成功，接下来可以在主服务器操作数据，在从服务器进行验证
 
+
+
+
+# 错误
+    [1045 Access denied for user 'root'@'localhost' (using password:YES)]
+    刚安装好的mysql 远程登陆报这个错误 5.8以上的版本是限制root用户远程登陆的！
+    解决方法创建一个和root一样权限的用户
+##  创建新用户：
+    use mysql           //选择库
+    select host, user from user;    查询用户表
+    CREATE USER 'username'@'%' IDENTIFIED BY 'password';    创建新用户
+##  赋予权限：
+    5.7以上的命令
+    GRANT ALL PRIVILEGES ON *.* TO 'username'@'%'   
+    或者5.6一下的命令
+    GRANT ALL PRIVILEGES ON *.* TO 'username'@'%' IDENTIFIED BY 'password' WITH GRANT OPTION;
+##  刷新使其生效
+    flush privileges;

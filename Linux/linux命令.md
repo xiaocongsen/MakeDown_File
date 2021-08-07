@@ -10,7 +10,10 @@ sudo supervisorctl status | awk '{print $1}' | xargs -I {} sudo supervisorctl st
 ldconfig
 /home/deploy/zhuchaodi/code/kafkatest/build/mixcp.bin -C -b 2.0.1.220:9092 -t asset_center_contract_clearing -p 0 -o beginning > a.txt
 
+hostname    //查看主机名
+hostnamectl set-hostname pve2   //修改主机name
 
+dd if=/dev/zero of=/test count=2 bs=512M        生成一个512*2大小的文件
 
 ### 快捷键
 Ctrl+a      跳到本行的行首

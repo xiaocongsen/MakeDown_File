@@ -1,7 +1,11 @@
 # Scrapy框架
-## 安装
+## ubuntu安装
     sudo apt-get install python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
     sudo pip install scrapy
+## win安装
+    pip install scrapy 
+    正常需要先安装这个 http://www.lfd.uci.edu/~gohlke/pythonlibs/#twisted 对应自己py版本 
+
 ## 命令
     bench           运行快速基准测试
     check           检查爬虫合同
@@ -214,9 +218,30 @@ ITEM_PIPELINES = {
 ## 流程
 编写Scrapy爬虫的一般流程：
 1. 创建项目：scrapy startproject XXX
-2. 创建爬虫: scrapy genspider xxx
-3. 编写items.py：定义保存数据的字段 name = scrapy.Field()
-4. 编写爬虫xxx.py：提取响应文件的数据，yield item -> 管道处理；yield Request -> 调度器处理
-5. 编写pipelines.py：存储item数据
-6. 编写settings.py：启用 ITEM_PIPELINES，设置相关配置信息（如USER_AGENT等...）
-7. 执行爬虫：scrapy crawl xxx
+2. 进入项目 cd XXX
+3. 创建爬虫: scrapy genspider xxxx.com
+4. 编写items.py：定义保存数据的字段 name = scrapy.Field()
+5. 编写爬虫xxx.py：提取响应文件的数据，yield item -> 管道处理；yield Request -> 调度器处理
+6. 编写pipelines.py：存储item数据
+7. 编写settings.py：启用 ITEM_PIPELINES，设置相关配置信息（如USER_AGENT等...）
+8. 执行爬虫：scrapy crawl xxx
+
+
+# 启用本地Shadowsocks代理
+1. 编辑middlewares.py 增加代码：
+```py
+    class ProxyMiddleware(object):
+        def process_request(self, request, spider):
+            request.meta['proxy'] = "http://127.0.0.1:10086"
+```
+2. 编辑settings.py DOWNLOADER_MIDDLEWARES字段 启用增加的这个中间件
+```py
+    DOWNLOADER_MIDDLEWARES = {
+    '...',  #其他的中间件
+    'BOOK.middlewares.ProxyMiddleware': 543,
+    #BOOK项目名
+    #middlewares py文件名
+    #ProxyMiddleware    启用的类名
+    }
+```
+3. 执行爬虫即可
