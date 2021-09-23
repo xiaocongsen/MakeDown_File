@@ -1,5 +1,7 @@
 ### 可用命令
 ldd 可执行程序  查询执行程序的链接库
+nm  查看动态库的链接符合
+
 nohup 可执行 &
 export MYSQL_CPP_SERVER_VERSION_ID=5700     设置临时环境变量
 export PATH=$PATH:/usr/local/go/bin 将/usr/local/go/bin目录添加至PATH环境变量：
@@ -14,6 +16,13 @@ hostname    //查看主机名
 hostnamectl set-hostname pve2   //修改主机name
 
 dd if=/dev/zero of=/test count=2 bs=512M        生成一个512*2大小的文件
+
+sudo dpkg -i *.deb      按照deb程序
+
+netstat -nr     查看路由表
+route -n        查看路由表
+sudo route add -net 10.21.0.0/16 gw 192.168.127.2   增加路由
+sudo route del -net 10.20.0.0/16 gw 192.168.127.2   删除路由
 
 ### 快捷键
 Ctrl+a      跳到本行的行首
