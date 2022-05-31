@@ -39,3 +39,19 @@ E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are y
     解决方法：
         sudo sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i --'s/# deb-src/deb-src/g' /etc/apt/sources.list
         sudo apt-get update
+
+# ubuntu虚拟机网卡图标不见了
+    sudo dhclient ens32
+
+# 无法远程登录需按照openssh-server
+    apt install openssh-server
+
+# 无法远程root登陆
+    sudo vi /etc/ssh/sshd_config
+    添加 PermitRootLogin yes
+    service sshd restart
+    
+#  允许无密码登录
+    sudo vi /etc/ssh/sshd_config
+    PermitEmptyPasswords yes
+    service sshd restart
