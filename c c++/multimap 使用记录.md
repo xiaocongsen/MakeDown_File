@@ -1,10 +1,10 @@
 # multimap
 
-1. 可以通过key排序，可以是小数，需要显示更多小数位使用std::setprecision(9)
+1. 可以通过key排序，可以是小数，需要显示更多小数位使用std::setprecision(9)
 2. 插入map中的数据是拷贝,
 3. std::greater<double> 大到小  std::less<double> 小到大
-4. 当指针指向multimap的begin val时 erase首个元素 通过指针获取的内容一定了
-- 例子:
+4. 当指针指向multimap的begin val时 erase首个元素 通过指针获取的内容一定了
+- 例子:
 ``` c++
 #include <map>
 #include <string>

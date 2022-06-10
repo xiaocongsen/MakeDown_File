@@ -26,16 +26,16 @@
     scrapy bench "http:www.baidu.com"           测试新能
     scrapy fetch "http:www.baidu.com"           测试下载一个页面数据
     scrapy shell "http:www.baidu.com"           在py终端中执行测试
-    scrapy startproject XXX                     创建Scrapy新项目项目名XXX
+    scrapy startproject XXX                     创建Scrapy新项目项目名XXX
     scrapy genspider xxx "xxxx.com"             创建xxx爬虫 一个项目下可以存在多个爬虫
     scrapy genspider -t crawl xxx "xxxx.com"    创建CrawlSpider模板的爬虫 继承scrapy.CrawlSpider(全栈爬虫)
-    scrapy crawl xxx                            执行xxx爬虫
+    scrapy crawl xxx                            执行xxx爬虫
     scrapy list                                 查看当前项目下所有爬虫
     scrapy crawl xxx -o name.json               输出的结果按指定的格式文件保存(支持json csv xml jsonlines jl pickle marshal) 返回结果不是item格式不能达到管道
 
 ## 函数
     response.body   查看响应的文本
-    response.text   查看响应的文本
+    response.text   查看响应的文本
     response.headers    查看请求报头
     request     获取请求信息
     response    响应的信息    
@@ -47,7 +47,7 @@
     response.re()   根据传入的正则表达式对数据进行提取,返回Unicode字符串list列表
 
 ## 目录结构
-    scrapy.cfg      scrapy项目远程部署和监控的配置
+    scrapy.cfg      scrapy项目远程部署和监控的配置
     spider/         存储爬虫代码的目录
     items.py        定义存储的字段,当字典用
     middlewares.py  中间件的处理函数编写目录
@@ -165,9 +165,9 @@ sys.setdefaultencoding("utf-8") #设置系统环境的默认编码
 #scrapy.Spider 是所有爬虫的父类,最基础的类
 #scrapy.CrawlSpider 所有爬虫的父类
 class BaiduSpider(scrapy.Spider):
-    # 表示爬虫名称 执行指定的名字 scrapy crawl baidu
+    # 表示爬虫名称 执行指定的名字 scrapy crawl baidu
     name = 'baidu'
-    # 抓取网页允许的域名范围 不写则不限制
+    # 抓取网页允许的域名范围 不写则不限制
     allowed_domains = ['baidu.com']
     # 起始Url地址, 爬虫启动的入口url 并发数量由配置的CONCURRENT_REQUESTS来限制
     start_urls = ['http://baidu.com/']
@@ -175,7 +175,7 @@ class BaiduSpider(scrapy.Spider):
     def parse(self, response):
         item = 类名()
         item['name'] = name
-        yield item  #返回管道可以处理的数据
+        yield item  #返回管道可以处理的数据
         yield scrapy.Request(stat_urls+str(10),meta = {"position": item, "s":s}, callback = self.parse)   #返回下一个请求 meta是传参(可以多个参数),response.meta["position"]获取参数, callback是回调函数
 ```
 ## 管道文件介绍

@@ -18,7 +18,7 @@
     ./b2 install
     
 
-# Mysql连接池例子
+# Mysql连接池例子
 ## 连接池.h文件
 ```c++
 #ifndef _DB_POOL_H_  

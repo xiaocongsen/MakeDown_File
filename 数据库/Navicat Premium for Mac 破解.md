@@ -50,7 +50,7 @@ AgMBAAE=
 ```
 
 ## 第三步
-    在命令行输入 sudo spctl --master-disable 开启任何来源
+    在命令行输入 sudo spctl --master-disable 开启任何来源
 
 ## 第四步
     断网 开启应用 点击激活
@@ -60,12 +60,12 @@ AgMBAAE=
     得到 请求码
 
 ## 第五步
-    联网
+    联网
     进入 http://tool.chacuo.net/cryptrsaprikey
     第一个填写私钥
     第二个填写请求码
     点击解密
-    得到明文 类似
+    得到明文 类似
     {
         "K" : "NAVHT4PXWT8WQBL5",
         "P" : "Mac 10.13",

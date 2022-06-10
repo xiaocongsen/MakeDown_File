@@ -6,7 +6,7 @@
     command + d             跳转到定义
     command + shift + r     查找所有应用
     command + f             查找当前页面
-    command + shift + f     查找整个项目
+    command + shift + f     查找整个项目
     command + /             注释相关
     command + [ or ]        缩进相关
     command + F10           运行到光标位置
@@ -18,7 +18,7 @@
     F12                     跳转到定义
     F12 + shift             查找所有应用
     command + f             查找当前页面
-    command + shift + f     查找整个项目
+    command + shift + f     查找整个项目
     command + /             注释相关
     command + [ or ]        缩进相关
     command + F10           运行到光标位置
@@ -32,7 +32,7 @@ apt install clang
     F12                     跳转到定义
     F12 + shift             查找所有应用
     control + f             查找当前页面
-    control + shift + f     查找整个项目
+    control + shift + f     查找整个项目
     无                      
     无                      
     无                      

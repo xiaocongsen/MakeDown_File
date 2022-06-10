@@ -9,13 +9,28 @@
 
 # 开启生成core文件
 
-    ulimit -c   查看可以生成core文件的大小
-    ulimit -c unlimited    取消该大小限制
+>    ulimit -c   查看可以生成core文件的大小
+
+>    ulimit -c unlimited    取消该大小限制
+
     设置好后程序奔溃就会产生core文件
 
-    gdb 程序名 ./core   
+    
+# 调试core文件
+>    gdb 程序名 code文件名
 
+>    gdb 程序名   回车后输入core-file code文件名
 
+# 打断点
+    gdb att 进程id  回车 进入gdb模式后
+    gdb> b 函数名 回车
+    gdb> c 回车 执行到就会断点
+
+# 调用函数
+    gdb 断点后
+    gdb> call 函数名 回车               //命令用于强制调用某函数,会显示函数的返回值
+    gdb> finish     回车                //运行到当前函数返回
+    gdb> c      继续跑
 
 # 命令  
 
@@ -40,11 +55,13 @@
     (gdb) watch input[4]                //设置观察点
     (gdb) info/i watchpoints            //查看设置的观察点
     (gdb) x/7b input                    //打印存储器内容，b--每个字节一组，7--7组
-    (gdb) disassemble                   //反汇编当前函数或指定函数
+    (gdb) disassemble                   //被用来查看当前执行时的源代码的机器码，其实际上只是把目前内存中的指令dump出来
     (gdb) si                            // 一条指令一条指令调试 而 s 是一行一行代码
     (gdb) info registers                // 显示所有寄存器的当前值
-    (gdb) x/20 $esp                    //查看内存中开始的20个数
-
+    (gdb) x/20 $esp                     //查看内存中开始的20个数
+    (gdb) call                          //命令用于强制调用某函数,会显示函数的返回值
+    (gdb) jump                          //指定下一条语句的运行点，不要跳出一个函数范围会有意想不到的错误
+    (gdb) return                        //在断点后还有语句没有执行完，我们可以使用return命令强制结束并返回。如果return后面指定了值 会被作为函数的返回值
 
 # 调试已经在运行的程序
     gdb attach pid

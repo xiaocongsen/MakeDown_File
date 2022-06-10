@@ -7,7 +7,7 @@
     with open("/tmp/foo.txt") as file:
         data = file.read()
 ```
-    with 先执行open("/tmp/foo.txt")的__enter__()函数返回值赋给 as后面的变量 执行下面的代码块 结束后调用__exit__()方法
+    with 先执行open("/tmp/foo.txt")的__enter__()函数返回值赋给 as后面的变量 执行下面的代码块 结束后调用__exit__()方法
 
 ## eval()
     eval（）将字符串string对象转化为有效的表达式参与求值运算返回计算结果
@@ -42,7 +42,7 @@
 ## map
 
 ## string 字符串
-    .lstrip()   去掉左边空格
+    .lstrip()   去掉左边空格
     .rstrip()   去掉右边空格
     .strip()    去掉左右空格
 
@@ -51,12 +51,12 @@
     context = ssl._create_unverified_context() #表示忽略请求中的SSL证书认证
     response = urllib2.urlopen(request, context = context) # 添加context参数，表示忽略证书认证
 
-## 字符转码
+## 字符转码
     在html的head中查看编码格式
     html_gbk.decode("gbk") 返回unicode编码格式
-    html_utf8 = html_gbk.decode("gbk").encode("utf-8") #gbk转utf-8
+    html_utf8 = html_gbk.decode("gbk").encode("utf-8") #gbk转utf-8
 
-## 输出
+## 输出
 ``` python
     print("python \n \t \t python")     #带转义字符的字符串 
     print(r"python \n \t \t python")    #纯粹的字符串
@@ -68,15 +68,15 @@
     if isinstance(item,TencentInfo):
         print(u"是这个类的")
     else:
-        print(u"不是这个类的")
+        print(u"不是这个类的")
 ```
 
 
 
-# python正则表达式库
+# python正则表达式库
 ``` python
     import re
-    #创建正则引擎对象
+    #创建正则引擎对象
     pattern = re.compile(r"\d+")
     pattern.findall()
 ```
@@ -90,7 +90,7 @@
 
 ``` python
     import re
-    #创建正则引擎对象
+    #创建正则引擎对象
     pattern = re.compile(r"\d+")
     m = pattern.match("abcd1234bcdgh56543")
     print(m)        #None
@@ -179,11 +179,11 @@ print response.json()
 ## dump dumps
     将字符串转换成json格式 默认使用ascii编码
     ensure_assic = False 来禁用ascii编码
-    dump和磁盘做交互 
+    dump和磁盘做交互 
     dumps和内存做交互
 
 ## load loads
-    将json格式转换成字符串,如果传入参数不是utf-8,需要指定encoding encoding="GBK"
+    将json格式转换成字符串,如果传入参数不是utf-8,需要指定encoding encoding="GBK"
     
     load和磁盘做交互
     loads和内存做交互
@@ -214,16 +214,16 @@ print response.json()
     scrapy bench "http:www.baidu.com"           测试新能
     scrapy fetch "http:www.baidu.com"           测试下载一个页面数据
     scrapy shell "http:www.baidu.com"           在py终端中执行测试
-    scrapy startproject XXX                     创建Scrapy新项目项目名XXX
+    scrapy startproject XXX                     创建Scrapy新项目项目名XXX
     scrapy genspider xxx "xxxx.com"             创建xxx爬虫 一个项目下可以存在多个爬虫
     scrapy genspider -t crawl xxx "xxxx.com"    创建CrawlSpider模板的爬虫 继承scrapy.CrawlSpider(全栈爬虫)
-    scrapy crawl xxx                            执行xxx爬虫
+    scrapy crawl xxx                            执行xxx爬虫
     scrapy list                                 查看当前项目下所有爬虫
     scrapy crawl xxx -o name.json               输出的结果按指定的格式文件保存(支持json csv xml jsonlines jl pickle marshal) 返回结果不是item格式不能达到管道
 
 ## 函数
     response.body   查看响应的文本
-    response.text   查看响应的文本
+    response.text   查看响应的文本
     response.headers    查看请求报头
     request     获取请求信息
     response    响应的信息    
@@ -235,7 +235,7 @@ print response.json()
     response.re()   根据传入的正则表达式对数据进行提取,返回Unicode字符串list列表
 
 ## 目录结构
-    scrapy.cfg      scrapy项目远程部署和监控的配置
+    scrapy.cfg      scrapy项目远程部署和监控的配置
     spider/         存储爬虫代码的目录
     items.py        定义存储的字段,当字典用
     middlewares.py  中间件的处理函数编写目录
@@ -353,9 +353,9 @@ sys.setdefaultencoding("utf-8") #设置系统环境的默认编码
 #scrapy.Spider 是所有爬虫的父类,最基础的类
 #scrapy.CrawlSpider 所有爬虫的父类
 class BaiduSpider(scrapy.Spider):
-    # 表示爬虫名称 执行指定的名字 scrapy crawl baidu
+    # 表示爬虫名称 执行指定的名字 scrapy crawl baidu
     name = 'baidu'
-    # 抓取网页允许的域名范围 不写则不限制
+    # 抓取网页允许的域名范围 不写则不限制
     allowed_domains = ['baidu.com']
     # 起始Url地址, 爬虫启动的入口url 并发数量由配置的CONCURRENT_REQUESTS来限制
     start_urls = ['http://baidu.com/']
@@ -363,7 +363,7 @@ class BaiduSpider(scrapy.Spider):
     def parse(self, response):
         item = 类名()
         item['name'] = name
-        yield item  #返回管道可以处理的数据
+        yield item  #返回管道可以处理的数据
         yield scrapy.Request(stat_urls+str(10),meta = {"position": item, "s":s}, callback = self.parse)   #返回下一个请求 meta是传参(可以多个参数),response.meta["position"]获取参数, callback是回调函数
 ```
 ## 管道文件介绍
