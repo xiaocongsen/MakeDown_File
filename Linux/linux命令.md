@@ -23,7 +23,8 @@ netstat -nr     查看路由表
 route -n        查看路由表
 sudo route add -net 10.21.0.0/16 gw 192.168.127.2   增加路由
 sudo route del -net 10.20.0.0/16 gw 192.168.127.2   删除路由
-
+sudo route add -net 192.168.79.0/24 metric 1000 dev ens33 
+sudo route del -net 192.168.79.0/24 metric 1000 dev ens33
 ### 快捷键
 Ctrl+a      跳到本行的行首
 Ctrl+e      跳到页尾
