@@ -206,7 +206,6 @@ int ssl_connetc()
         }
     }
 
-
     // 进行操作
     strcat(szBuffer, "\n this is from server========server resend to client 1");
     if(SSL_write(ssl, szBuffer, strlen(szBuffer)) <= 0)
