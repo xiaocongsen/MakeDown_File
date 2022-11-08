@@ -9,15 +9,15 @@
   
 ## Docker安装
     docker run -it ubuntu /bin/bash     安装ubuntu最新版本并进入命令行
-    apt-get update
-    apt-get upgrade
-    apt-get install rabbitmq-server     安装rabbitmq服务器
+    apt update
+    apt upgrade
+    apt install rabbitmq-server     安装rabbitmq服务器
     rabbitmq-plugins enable rabbitmq_management 安装插件
     service rabbitmq-server start   启动服务
     curl 127.0.0.1:15672    可以查看启动是否成功
 
     C++需要安装库rabbimq-c SimpleAmqpClient
-    apt-get install  net-tools git libboost-dev openssl  libssl-dev cmake vim autoconf automake libtool libffi-dev doxygen graphviz libpopt-dev xmlto
+    apt install  net-tools git libboost-dev openssl  libssl-dev cmake vim autoconf automake libtool libffi-dev doxygen graphviz libpopt-dev xmlto
     git clone https://github.com/alanxz/rabbitmq-c   
     mkdir build && cd build
     cmake ..
@@ -28,7 +28,7 @@
     git clone https://github.com/alanxz/SimpleAmqpClient  //进入clone的目录
     mkdir simpleamqpclient-build
     cd simpleamqpclient-build
-    apt-get install libboost-all-dev  (为了解决找不到boost头文件的问题)
+    apt install libboost-all-dev  (为了解决找不到boost头文件的问题)
     cmake ..
     make
     make install

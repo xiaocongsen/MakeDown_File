@@ -9,7 +9,7 @@
 
 3. 更新你的仓库，并安装 ceph-deploy ：
 
-    sudo apt-get update && sudo apt-get install ceph-deploy
+    sudo apt update && sudo apt install ceph-deploy
 
 - 错误：No module named 'ceph_deploy'
     apt install python-setuptools
@@ -18,9 +18,9 @@
 你的管理节点必须能够通过 SSH 无密码地访问各 Ceph 节点。如果 ceph-deploy 以某个普通用户登录，那么这个用户必须有无密码使用 sudo 的权限。
 
 1. 安装 NTP
-    sudo apt-get install ntp
+    sudo apt install ntp
 2. 安装 SSH 服务器
-    sudo apt-get install openssh-server
+    sudo apt install openssh-server
 3. 创建部署 CEPH 的用户
 
 4. 允许无密码 SSH 登录
@@ -84,7 +84,7 @@ Ceph 的各 OSD 进程通过网络互联并向 Monitors 上报自己的状态。
     6) 创建mgr    都执行pveceph createmgr
     6) 创建ceph集群存储OSD服务 都执行pveceph createosd /dev/sdb    查看状态ceph osd stat或者ceph osd tree
     7) 创建存储池 ceph osd pool create pvepool 128 128
-    8)  同步集群机器时间 安装apt-get install ntpdate 执行ntpdate 120.25.108.11  并设置定时任务echo "0 * * * * /usr/sbin/ntpdate 120.25.108.11 > /dev/null 2>&1" >> /etc/crontab
+    8)  同步集群机器时间 安装apt install ntpdate 执行ntpdate 120.25.108.11  并设置定时任务echo "0 * * * * /usr/sbin/ntpdate 120.25.108.11 > /dev/null 2>&1" >> /etc/crontab
 
 4. 建立ceph客户端
 

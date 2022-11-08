@@ -38,7 +38,7 @@ echo "" > ddd
 
 ```shell
 #!/bin/bash
-sudo apt-get install  net-tools git libboost-dev openssl  libssl-dev cmake vim autoconf automake libtool libffi-dev doxygen graphviz libpopt-dev xmlto libboost-all-dev libmysqlcppconn-dev
+sudo apt install  net-tools git libboost-dev openssl  libssl-dev cmake vim autoconf automake libtool libffi-dev doxygen graphviz libpopt-dev xmlto libboost-all-dev libmysqlcppconn-dev
 cd ../
 # 安装 rabbitmq-c
 if [ ! -d "rabbitmq-c" ]; then

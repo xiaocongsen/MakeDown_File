@@ -68,5 +68,16 @@ UINT32 CSDK_ListenPort_Create(UINT32 *puiPort)
     fd_set Readfds;
     FD_ZERO(&Readfds);
     FD_SET(uiFd, &Readfds);
+
+     // timeout setting
+        tv.tv_sec = 30;
+        tv.tv_usec = 0;
+
+        LinuxRet = VOS_Select((VOS_INT32)(LinuxMaxFd + 1), &Readfds, NULL, NULL, &tv);
+        if(VOS_NULL_LONG == LinuxRet)
+        {
+            DDM_Log(DDM_LOG_CADM,DDM_LOG_LEVEL_ERROR, "[CSDK recv thread select failed]");
+            break;
+        }
 }
 ```

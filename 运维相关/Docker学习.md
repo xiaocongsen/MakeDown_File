@@ -2,12 +2,12 @@
 # Docker 使用记录
 ## Ubuntu安装
 ``` Shell
-        sudo apt-get update -y  ##更新
-        sudo apt-get install -y apt-transport-https ca-certificates curl  software-properties-common    ##安装 tools
+        sudo apt update -y  ##更新
+        sudo apt install -y apt-transport-https ca-certificates curl  software-properties-common    ##安装 tools
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -    ##添加apt-key
         sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu artful stable"   ##安装 docker-ce
-        sudo apt-get update -y
-        sudo apt-get install -y docker-ce   ##安装 docker-ce
+        sudo apt update -y
+        sudo apt install -y docker-ce   ##安装 docker-ce
 ```
 ## Mac安装
 ``` shell
@@ -59,7 +59,7 @@ docker load < xxx.tar.gz        加载某个镜像
 ### 实践中遇到的问题
 1. 在Docker的ubuntu环境下安装mysql 安装无法成功
 ``` shell
-apt-get install mysql-server mysql-client libmysqlclient-dev
+apt install mysql-server mysql-client libmysqlclient-dev
 ```
 安装完成图片
 

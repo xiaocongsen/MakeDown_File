@@ -1,6 +1,8 @@
 #   解决Could not start process "make" qmake_all问题
-    sudo apt-get install build-essential
+    sudo apt install build-essential
 
+# Qt error: /usr/bin/ld: cannot find -lGL: No such file or directory
+    sudo apt install mesa-common-dev libglu1-mesa-dev
 
 # qt Ui工程
 ```pro

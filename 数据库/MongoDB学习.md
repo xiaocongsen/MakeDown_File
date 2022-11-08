@@ -3,7 +3,7 @@
 MongoDB是一种基于BSON(Binary-JSON)的面向文档的非关系型数据库
 
 ## 安装 MongoDB
-sudo apt-get install mongodb
+sudo apt install mongodb
 
 ## 查看版本号
 mongo -version
@@ -17,7 +17,7 @@ service mongodb status
 pgrep mongo -l
 
 ## 卸载 MongoDB
-sudo apt-get –purge remove mongodb mongodb-clients mongodb-server
+sudo apt –purge remove mongodb mongodb-clients mongodb-server
 
 ## 文档和集合的概念
 多个键及其关联的值有序的放在一起就是文档,类似于关系型数据库中的行,文档中不允许有重复的键

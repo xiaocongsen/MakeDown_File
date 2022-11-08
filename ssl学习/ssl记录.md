@@ -87,10 +87,8 @@ SSL_OP_PRIORITIZE_CHACHA            当客户端修改SSL_OP_CIPHER_SERVER_PREFE
 
 SSL_OP_CIPHER_SERVER_PREFERENCE      在服务器上设置，以根据服务器的首选项选择密码
 
-
 SSL_OP_TLS_ROLLBACK_BUG     如果设置，则服务器将允许客户端发布SSLv3.0版本号作为预主密钥中支持的最新版本，即使在客户端hello中宣布TLSv1.0（版本3.1）。通常，这是禁止的，以防止版本回滚攻击。
 
 SSL_OP_NO_ANTI_REPLAY       关闭早期数据的自动TLSv1.3防重放保护。这只是一个服务器端选项（对客户端没有影响）
-
 
 SSL_OP_NO_RENEGOTIATION      不允许所有重协商

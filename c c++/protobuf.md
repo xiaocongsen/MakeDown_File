@@ -1,5 +1,5 @@
 # 编译安装
-    sudo apt-get install autoconf automake libtool curl make g++ unzip
+    sudo apt install autoconf automake libtool curl make g++ unzip
     https://github.com/protocolbuffers/protobuf/releases 下载最新releases cpp包
     ./autogen.sh
     ./configure

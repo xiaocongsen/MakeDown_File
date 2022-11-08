@@ -1,6 +1,6 @@
 # Scrapy框架
 ## ubuntu安装
-    sudo apt-get install python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
+    sudo apt install python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
     sudo pip install scrapy
 ## win安装
     pip install scrapy 

@@ -47,4 +47,8 @@
     deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-proposed main restricted universe multiverse
     
 ## 安装编译工具集
-    sudo apt-get install build-essential
+    sudo apt install build-essential
+    或者单独安装
+    sudo apt install gcc
+    sudo apt install g++
+    sudo apt install make

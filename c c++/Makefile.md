@@ -42,3 +42,18 @@ $(LIB_STATIC_OBJECT):$(OBJS)
 clean:
 	rm  -rf  $(LIB_STATIC_OBJECT) $(LIB_DYNAMIC_OBJECT) $(OBJS)
 ```
+
+
+
+## GNU C编译器的gnu11和c11
+	国际标准组织发布c11后，gnu为自己的编译器发布两种标准gnu11和c11
+	gnu11：带gnu c扩展的c11标准，如果你的代码包含了typeof，__attribute__等等gnu的扩展，就必须用这个。
+	c11：这个就是纯c11的标准，不带gnu扩展。
+
+	可以在Makefile中声明：
+
+>	CFLAGS=-std=gnu11 -g -Wall
+
+	或者，纯标准的c11，玩linux的要慎用，因为linux代码到处都是gnu的痕迹哦，哈哈
+
+>	CFLAGS=-std=c11 -g -Wall

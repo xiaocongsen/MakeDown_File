@@ -192,7 +192,7 @@ print response.json()
 
 # Scrapy框架
 ## 安装
-    sudo apt-get install python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
+    sudo apt install python-dev python-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev
     sudo pip install scrapy
 ## 命令
     bench           运行快速基准测试

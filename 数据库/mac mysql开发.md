@@ -3,8 +3,8 @@
     先装boost
     brew install mysql-connector-c++
 ## ubuntu 
-    //sudo apt-get install libmysqlclient-dev
-    sudo apt-get install libmysqlcppconn-dev
+    //sudo apt install libmysqlclient-dev
+    sudo apt install libmysqlcppconn-dev
    
 ## Centos
     先决条件 本机上装的mysql不能低于5.7

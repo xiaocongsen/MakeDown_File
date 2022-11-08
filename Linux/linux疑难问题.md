@@ -3,11 +3,11 @@
 - 解决方案
     cd /var/lib/dpkg/info/
     ls|xargs sudo rm
-    sudo apt-get clean
-    sudo apt-get autoremove
-    sudo apt-get autoclean
-    sudo apt-get install -f
-    sudo apt-get update 
+    sudo apt clean
+    sudo apt autoremove
+    sudo apt autoclean
+    sudo apt install -f
+    sudo apt update 
 
 # 问题二
 E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)
@@ -38,7 +38,7 @@ E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are y
 # Ubuntu使用apt时提示 You must put some ‘source’ URIs in your sources.list
     解决方法：
         sudo sed -i -- 's/#deb-src/deb-src/g' /etc/apt/sources.list && sudo sed -i --'s/# deb-src/deb-src/g' /etc/apt/sources.list
-        sudo apt-get update
+        sudo apt update
 
 # ubuntu虚拟机网卡图标不见了
     sudo dhclient ens32
@@ -55,3 +55,16 @@ E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are y
     sudo vi /etc/ssh/sshd_config
     PermitEmptyPasswords yes
     service sshd restart
+
+# ubuntu安装vmware tools
+    sudo apt update
+    sudo apt install open-vm-tools
+    sudo apt install open-vm-tools-desktop
+
+# ubuntu libxcb-xinerama.so.0 => not found
+    sudo apt install libxcb-xinerama0
+    
+
+# ubuntu pushd: not found
+    pushd命令在bash环境
+    执行sudo dpkg-reconfigure dash 命令，将dash设置为No
