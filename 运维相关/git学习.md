@@ -24,7 +24,8 @@
     git clean -fd
 5. 连 gitignore 的未跟踪的文件/目录也一起删掉 （慎用，一般这个是用来删掉编译出来的 .o之类的文件用的）
     git clean -xfd
- 
+6. 清理本地所有修改
+  git checkout . 
 
 ## 初始化流程
     git init
@@ -54,3 +55,12 @@
 3. 已经用 git commit  提交了代码
     git reset --hard commitId
     commitId 可以通过git log输出    (HEAD -> master)为当前所在分支
+
+
+
+
+# git问题处理
+## git clone报错 server certificate verification failed. CAfile: none CRLfile: none
+    git config --global http.sslverify false
+    git config --global https.sslverify false
+    export GIT_SSL_NO_VERIFY=1
