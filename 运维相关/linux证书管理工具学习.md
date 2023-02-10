@@ -29,3 +29,9 @@ certutil -L -n xxx -d .pki/nssdb/       查询某个证书信息
 "/etc/pki/tls/certs",           // Fedora/RHEL
 "/etc/openssl/certs",           // NetBSD
 /etc/pki/CA/certs               //Amazon Linux
+
+
+
+
+
+

@@ -35,12 +35,18 @@
     git push origin master:master
 
 
+## 查看提交记录
+    git log   //最新的在最前面
+
 ## 加分支流程
     git checkout -b 新分支名字
     git add -A
     git commit -m "init"
     git push origin 新分支名字:新分支名字
 
+## 切换远程分支
+    git branch -a       查看所有分支
+     git checkout -b 命名本地分支 远程分支名  
 
 ## 合并分支流程
     当前分支没有修改
