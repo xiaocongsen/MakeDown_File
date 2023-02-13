@@ -15,33 +15,31 @@ ACK 和 SEQ 的值之间相差很大的原因有很多。可能是因为连接�
 
 SEQ/ACK analysis 是通过比较 SEQ 和 ACK 的值来判断 TCP 连接的状态和数据流量是否正常的。
 
-SourceIP=10.19.11.65 DestinationIP=10.19.12.123
-第一个数据  seq=0        ack=0      SYN          datalen=0               nextseq=1                  //首次建立tcp链接,属于三次握手的第一次握手 本端nextseq=seq+1(datalen等于0的时候且非ACK和RST就+1) nextseq表示本端下一个数据包的的seq值=1
-第三个数据  seq=1        ack=1      ACK          datalen=0               nextseq=1                  //首次建立tcp链接,属于三次握手的第三次握手 ack=对端的nextseq 本端nextseq=datalen+seq 表示本端下一个数据包的seq还是1               
-第四个数据  seq=1        ack=1      PSH,ACK      datalen=253             nextseq=254                //本端发送254字节数据,ack=对端的nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的sqe的值=254 表示对端的下一个数据包ack的值等于254,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
-第八个数据  seq=254      ack=1520   ACK          datalen=0               nextseq=254                //本端确定收到数据,收到的数据长度为本端当前ack-前一个ack的值(1520-1=1519),ack=对端的nextseq 本端nextseq=datalen+seq 表示本端下一个数据包的seq还是254
-第九个数据  seq=254      ack=1520   PSH,ACK      datalen=346             nextseq=600                //本端发送346字节数据,ack=对端的nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的sqe的值=600 表示对端的下一个数据包ack的值等于600,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
-第11个数据  seq=600      ack=1599   PSH,ACK      datalen=505             nextseq=1105               //本端发送505字节数据,确认接收数据长度为本端当前ack-前一个ack的值(1599-1520=79) ack=对端的nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的sqe的值=1105 表示对端的下一个数据包ack的值等于1105,这里发送ACK用来确认本端收到了ack=1599的数据包(即对端的nextseq=1599的数据包)
-第13个数据  seq=1105     ack=1816   PSH,ACK      datalen=57              nextseq=1162               //本端发送57字节数据,确认接收数据长度为本端当前ack-前一个ack的值(1816-1599=217) ack=对端的nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的sqe的值=1162 表示对端的下一个数据包ack的值等于1162,这里发送ACK用来确认本端收到了ack=1816的数据包(即对端的nextseq=1816的数据包)
-第14个数据  seq=1162     ack=1816   FIN,ACK      datalen=0               nextseq=1163               //本端发送FIN,属于四次挥手的第一次挥手,ack=对端的nextseq 本端nextseq=seq+1 nextseq表示本端下一个数据包的seq还是1163,表示对端的下一个数据包ack的值等于1163,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
-第18个数据  seq=1163     ack=1817   ACK          datalen=0               nextseq=1163               //本端接收到对端的FIN并回复ACK报文,FIN属于四次挥手的第四次挥手,并没有收到RST报文(如果收到则不会回复ACK报文) RST是对端要求终止连接,ack=对端的nextseq 本端nextseq=seq nextseq表示本端下一个数据包的seq还是1163,表示对端的下一个数据包ack的值等于1816,这里发送ACK用来确认本端收到了ack=1163的数据包(即对端的nextseq=1163的数据包)
+## Wireshark整条tcp数据分析
+>SourceIP=10.19.11.65 DestinationIP=10.19.12.123
+- 第一个数据  seq=0        ack=0      SYN          datalen=0               nextseq=1                  //首次建立tcp链接,属于三次握手的第一次握手 本端nextseq=seq+1(datalen等于0的时候且非ACK和RST就+1) nextseq表示本端下一个数据包的的seq值=1
+- 第三个数据  seq=1        ack=1      ACK          datalen=0               nextseq=1                  //首次建立tcp链接,属于三次握手的第三次握手 ack=对端的nextseq 本端nextseq=datalen+seq 表示本端下一个数据包的seq还是1               
+- 第四个数据  seq=1        ack=1      PSH,ACK      datalen=253             nextseq=254                //本端发送254字节数据,ack=对端的nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的sqe的值=254 表示对端的下一个数据包ack的值等于254,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
+- 第八个数据  seq=254      ack=1520   ACK          datalen=0               nextseq=254                //本端确定收到数据,收到的数据长度为本端当前ack-前一个ack的值(1520-1=1519),ack=对端的nextseq 本端nextseq=datalen+seq 表示本端下一个数据包的seq还是254
+- 第九个数据  seq=254      ack=1520   PSH,ACK      datalen=346             nextseq=600                //本端发送346字节数据,ack=对端的nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的sqe的值=600 表示对端的下一个数据包ack的值等于600,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
+- 第11个数据  seq=600      ack=1599   PSH,ACK      datalen=505             nextseq=1105               //本端发送505字节数据,确认接收数据长度为本端当前ack-前一个ack的值(1599-1520=79) ack=对端的nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的sqe的值=1105 表示对端的下一个数据包ack的值等于1105,这里发送ACK用来确认本端收到了ack=1599的数据包(即对端的nextseq=1599的数据包)
+- 第13个数据  seq=1105     ack=1816   PSH,ACK      datalen=57              nextseq=1162               //本端发送57字节数据,确认接收数据长度为本端当前ack-前一个ack的值(1816-1599=217) ack=对端的nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的sqe的值=1162 表示对端的下一个数据包ack的值等于1162,这里发送ACK用来确认本端收到了ack=1816的数据包(即对端的nextseq=1816的数据包)
+- 第14个数据  seq=1162     ack=1816   FIN,ACK      datalen=0               nextseq=1163               //本端发送FIN,属于四次挥手的第一次挥手,ack=对端的nextseq 本端nextseq=seq+1 nextseq表示本端下一个数据包的seq还是1163,表示对端的下一个数据包ack的值等于1163,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
+- 第18个数据  seq=1163     ack=1817   ACK          datalen=0               nextseq=1163               //本端接收到对端的FIN并回复ACK报文,FIN属于四次挥手的第四次挥手,并没有收到RST报文(如果收到则不会回复ACK报文) RST是对端要求终止连接,ack=对端的nextseq 本端nextseq=seq nextseq表示本端下一个数据包的seq还是1163,表示对端的下一个数据包ack的值等于1816,这里发送ACK用来确认本端收到了ack=1163的数据包(即对端的nextseq=1163的数据包)
 
 
-SourceIP=10.19.12.123 DestinationIP=10.19.11.65
-第二个数据  seq=0        ack=1      SYN,ACK      datalen=0               nextseq=1                  //首次建立tcp链接,属于三次握手的第二次握手 ack=对端的nextseq 本端nextseq=1表示本端下一个数据包的seq=1
-第五个数据  seq=1        ack=254    ACK          datalen=0               nextseq=1                  //本端接收数据并发送独立的确定数据包,收到的数据长度为本端当前ack-前一个ack的值(254-1=253),ack=对端nextseq 本端nextseq=datalen+1 nextseq表示本端下一个数据包的的seq值=1
-第六个数据  seq=1        ack=254    PSH          datalen=1460            nextseq=1461               //本端独立发送1460字节数据,ack=对端nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的seq=1461 表示对端的下一个数据包ack的值等于1461
-第七个数据  seq=1461     ack=254    PSH,ACK      datalen=59              nextseq=1520               //本端发送59字节数据,ack=对端nextseq 本端nextseq=datalen+seq   nextseq表示本端下一个数据包的seq=1520 表示对端的下一个数据包ack的值等于1520,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
-第10个数据  seq=1520     ack=600    PSH,ACK      datalen=79              nextseq=1599               //本端发送79字节数据,收到的数据长度为本端当前ack-前一个ack的值(600-254=346),ack=对端nextseq 本端nextseq=datalen+seq   nextseq表示本端下一个数据包的seq=1599 表示对端的下一个数据包ack的值等于1599,这里发送ACK用来确认本端收到了ack=600的数据包(即对端的nextseq=600的数据包)
-第12个数据  seq=1599     ack=1105   PSH,ACK      datalen=217             nextseq=1816               //本端发送217字节数据,收到的数据长度为本端当前ack-前一个ack的值(1105-600=505),ack=对端nextseq 本端nextseq=datalen+seq   nextseq表示本端下一个数据包的seq=1816 表示对端的下一个数据包ack的值等于1816,这里发送ACK用来确认本端收到了ack=1105的数据包(即对端的nextseq=1105的数据包)
-第15个数据  seq=1816     ack=1163   ACK          datalen=0               nextseq=1816               //本端收到FIN包后发送ACK数据包,属于四次挥手的第二次挥手,ack=对端nextseq 本端nextseq=datalen+seq  nextseq表示本端下一个数据包的seq=1816 表示对端的下一个数据包ack的值等于1816
-第16个数据  seq=1816     ack=1163   FIN,ACK      datalen=0               nextseq=1817               //本端发送FIN数据包,属于四次挥手的第三次挥手,ack=对端nextseq 本端nextseq=seq+1  nextseq表示本端下一个数据包的seq=1817 表示对端的下一个数据包ack的值等于1817,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
-第17个数据  seq=1817     ack=1163   RST,ACK      datalen=0               nextseq=1817               //本端发送RST数据包来终止连接(当服务端发送RST时,四次挥手的过程被中断,并且连接直接终止,不再继续执行剩余的步骤),ack=对端nextseq 本端nextseq=seq(RST的时候)  
-第19个数据  seq=1817     ack=0      RST          datalen=0               nextseq=1817               //本端发送第二次RST数据包来确认连接是否已经断开,ack=0(第二次RST) 本端nextseq=seq(RST的时候) 整条tcp数据结束。
+>SourceIP=10.19.12.123 DestinationIP=10.19.11.65
+- 第二个数据  seq=0        ack=1      SYN,ACK      datalen=0               nextseq=1                  //首次建立tcp链接,属于三次握手的第二次握手 ack=对端的nextseq 本端nextseq=1表示本端下一个数据包的seq=1
+- 第五个数据  seq=1        ack=254    ACK          datalen=0               nextseq=1                  //本端接收数据并发送独立的确定数据包,收到的数据长度为本端当前ack-前一个ack的值(254-1=253),ack=对端nextseq 本端nextseq=datalen+1 nextseq表示本端下一个数据包的的seq值=1
+- 第六个数据  seq=1        ack=254    PSH          datalen=1460            nextseq=1461               //本端独立发送1460字节数据,ack=对端nextseq 本端nextseq=datalen+seq nextseq表示本端下一个数据包的seq=1461 表示对端的下一个数据包ack的值等于1461
+- 第七个数据  seq=1461     ack=254    PSH,ACK      datalen=59              nextseq=1520               //本端发送59字节数据,ack=对端nextseq 本端nextseq=datalen+seq   nextseq表示本端下一个数据包的seq=1520 表示对端的下一个数据包ack的值等于1520,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
+- 第10个数据  seq=1520     ack=600    PSH,ACK      datalen=79              nextseq=1599               //本端发送79字节数据,收到的数据长度为本端当前ack-前一个ack的值(600-254=346),ack=对端nextseq 本端nextseq=datalen+seq   nextseq表示本端下一个数据包的seq=1599 表示对端的下一个数据包ack的值等于1599,这里发送ACK用来确认本端收到了ack=600的数据包(即对端的nextseq=600的数据包)
+- 第12个数据  seq=1599     ack=1105   PSH,ACK      datalen=217             nextseq=1816               //本端发送217字节数据,收到的数据长度为本端当前ack-前一个ack的值(1105-600=505),ack=对端nextseq 本端nextseq=datalen+seq   nextseq表示本端下一个数据包的seq=1816 表示对端的下一个数据包ack的值等于1816,这里发送ACK用来确认本端收到了ack=1105的数据包(即对端的nextseq=1105的数据包)
+- 第15个数据  seq=1816     ack=1163   ACK          datalen=0               nextseq=1816               //本端收到FIN包后发送ACK数据包,属于四次挥手的第二次挥手,ack=对端nextseq 本端nextseq=datalen+seq  nextseq表示本端下一个数据包的seq=1816 表示对端的下一个数据包ack的值等于1816
+- 第16个数据  seq=1816     ack=1163   FIN,ACK      datalen=0               nextseq=1817               //本端发送FIN数据包,属于四次挥手的第三次挥手,ack=对端nextseq 本端nextseq=seq+1  nextseq表示本端下一个数据包的seq=1817 表示对端的下一个数据包ack的值等于1817,这里发送ACK用来再次确认本端收到了序号为ACK所示的数据包
+- 第17个数据  seq=1817     ack=1163   RST,ACK      datalen=0               nextseq=1817               //本端发送RST数据包来终止连接(当服务端发送RST时,四次挥手的过程被中断,并且连接直接终止,不再继续执行剩余的步骤),ack=对端nextseq 本端nextseq=seq(RST的时候)  
+- 第19个数据  seq=1817     ack=0      RST          datalen=0               nextseq=1817               //本端发送第二次RST数据包来确认连接是否已经断开,ack=0(第二次RST) 本端nextseq=seq(RST的时候) 整条tcp数据结束。
 
-> 个人理解：
-- 当源地址是本机时,ack的值是远端发送的数据总长度-1,seq的值是它调用PSH时累计的数据长度。
-- 当源地址是远程时,ack的值是对端发送的数据总长度-1等于对端seq的值+1,seq的值是它调用PSH时累计的数据长度。
 ## Win
 Win 表示当前窗口的大小。在TCP协议中,当两端进行数据传输时,为防止数据积压,造成网络拥堵,需要使用窗口来限制传输的数据量。Win字段的值表示当前发送端允许接收端发送的数据包的最大大小,也就是窗口大小。接收端收到Win字段值后,如果超过了该大小,就会对数据进行抛弃处理。
 
