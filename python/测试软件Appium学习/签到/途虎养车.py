@@ -12,16 +12,19 @@ from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 caps = {}
 caps["platformName"] = "Android"
 caps["appium:deviceName"] = "M2012K11AC"
-caps["appium:appPackage"] = "com.qdtevc.teld.app"
-caps["appium:appActivity"] = ".activity.StartActivity"
+caps["appium:appPackage"] = "cn.TuHu.android"
+caps["appium:appActivity"] = "cn.TuHu.Activity.Welcome"
 caps["appium:platformVersion"] = "13"
 caps["appium:noReset"] = True
-caps["appium:unicodeKeyboard"] = True
-caps["appium:resetKeyboard"] = True
+# caps["appium:unicodeKeyboard"] = True
+# caps["appium:resetKeyboard"] = True
 caps["appium:dontStopAppOnReset"] = False
 caps["appium:ensureWebviewsHavePages"] = True
 caps["appium:nativeWebScreenshot"] = True
@@ -29,23 +32,21 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
-sleep(3)
-try:                                        
-    button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout[2]/android.widget.LinearLayout[2]/android.view.View')
-    button.click()
-except NoSuchElementException:
-    # 处理找不到元素的情况
-    print("无法找到元素")
 
-button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.TextView[2]')
-button.click()      #点击领积分
-sleep(1)
-actions = ActionChains(driver)
-actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-actions.w3c_actions.pointer_action.move_to_location(544, 858)
-actions.w3c_actions.pointer_action.pointer_down()
-actions.w3c_actions.pointer_action.pause(0.1)
-actions.w3c_actions.pointer_action.release()
-actions.perform()
+wait = WebDriverWait(driver, 5)
+try:
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.RelativeLayout[1]/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.ImageView')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找领积分按钮")
+	
+try:
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[2]/android.view.View[1]/android.widget.Button')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找签到领积分按钮")
+	
 sleep(2)
 driver.quit()

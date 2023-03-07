@@ -12,16 +12,19 @@ from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 caps = {}
 caps["platformName"] = "Android"
 caps["appium:deviceName"] = "M2012K11AC"
-caps["appium:appPackage"] = "com.qdtevc.teld.app"
-caps["appium:appActivity"] = ".activity.StartActivity"
+caps["appium:appPackage"] = "com.sgcc.evs.echarge"
+caps["appium:appActivity"] = "com.evs.echarge.dev.ui.advertisement.SplashActivity"
 caps["appium:platformVersion"] = "13"
 caps["appium:noReset"] = True
-caps["appium:unicodeKeyboard"] = True
-caps["appium:resetKeyboard"] = True
+# caps["appium:unicodeKeyboard"] = True
+# caps["appium:resetKeyboard"] = True
 caps["appium:dontStopAppOnReset"] = False
 caps["appium:ensureWebviewsHavePages"] = True
 caps["appium:nativeWebScreenshot"] = True
@@ -29,12 +32,27 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
-sleep(3)
+try:                                        
+    button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.view.ViewGroup/android.widget.TextView[1]')
+    button.click()
+except NoSuchElementException:
+    # 处理找不到元素的情况
+    print("无法找到广告跳过按钮")
 
-button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout[5]')
-button.click()      #点击我的
-sleep(1)
-button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.view.ViewGroup/android.widget.ScrollView/android.widget.LinearLayout/android.widget.LinearLayout[1]/android.widget.RelativeLayout')
-button.click()      #点击签到
+wait = WebDriverWait(driver, 5)
+try:
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout[5]')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找我的按钮")
+try:
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.view.ViewGroup/android.widget.ScrollView/android.widget.LinearLayout/android.widget.LinearLayout[1]/android.widget.RelativeLayout')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找签到按钮")
+
+
 sleep(2)
 driver.quit()

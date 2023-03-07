@@ -11,6 +11,9 @@ from selenium.webdriver.common.actions import interaction
 from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException
 
 caps = {}
 caps["platformName"] = "Android"
@@ -19,8 +22,8 @@ caps["appium:appPackage"] = "com.sinovatech.unicom.ui"
 caps["appium:appActivity"] = "com.sinovatech.unicom.basic.ui.activity.WelcomeClient"
 caps["appium:platformVersion"] = "13"
 caps["appium:noReset"] = True
-caps["appium:unicodeKeyboard"] = True
-caps["appium:resetKeyboard"] = True
+# caps["appium:unicodeKeyboard"] = True
+# caps["appium:resetKeyboard"] = True
 caps["appium:dontStopAppOnReset"] = False
 caps["appium:ensureWebviewsHavePages"] = True
 caps["appium:nativeWebScreenshot"] = True
@@ -28,10 +31,19 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
-button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.TextView')
-button.click()      #跳过开头
-sleep(1)
-button = driver.find_element(By.XPATH, '//android.widget.ImageView[@content-desc="签到"]')
-button.click()
+wait = WebDriverWait(driver, 5)
+try:
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.TextView')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找跳过广告按钮")
+
+try:
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '//android.widget.ImageView[@content-desc="签到"]')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找签到按钮")
 sleep(3)
 driver.quit()
