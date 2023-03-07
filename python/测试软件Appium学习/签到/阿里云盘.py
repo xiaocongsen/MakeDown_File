@@ -16,14 +16,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from selenium.common.exceptions import StaleElementReferenceException
-from appium.webdriver.common.touch_action import TouchAction
-
 
 caps = {}
 caps["platformName"] = "Android"
 caps["appium:deviceName"] = "M2012K11AC"
-caps["appium:appPackage"] = "com.qdtevc.teld.app"
-caps["appium:appActivity"] = ".activity.StartActivity"
+caps["appium:appPackage"] = "com.alicloud.databox"
+caps["appium:appActivity"] = ".launcher.splash.SplashActivity"
 caps["appium:platformVersion"] = "13"
 caps["appium:noReset"] = True
 # caps["appium:unicodeKeyboard"] = True
@@ -35,34 +33,16 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
-sleep(3)
-try:                                        
-    button = driver.find_element(By.ID, 'xxx')
-    button.click()
-except NoSuchElementException:
-    # 处理找不到元素的情况
-    print("无法找到元素")
 
 wait = WebDriverWait(driver, 5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, 'xxx')))
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.view.ViewGroup/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.widget.HorizontalScrollView/android.widget.LinearLayout/android.widget.FrameLayout[1]')))
     button.click()
-except StaleElementReferenceException:           # 处理查找到的元素与之前存储的元素不再是同一个对象 重新获取元素
-    button = wait.until(EC.presence_of_element_located((By.XPATH, 'xxx')))
+except StaleElementReferenceException:
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.view.ViewGroup/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[1]/android.widget.HorizontalScrollView/android.widget.LinearLayout/android.widget.FrameLayout[1]')))
     button.click()
 except TimeoutException:
-    print("超时没找我的按钮")
+    print("超时没找签到按钮")
 
-try:
-    element = wait.until(EC.presence_of_element_located((By.XPATH, 'xx')))
-    location = element.location
-    size = element.size
-    x = location['x'] + size['width'] / 2
-    y = location['y'] + size['height'] / 2
-    action = TouchAction(driver)
-    action.tap(x=x, y=y).perform()
-except TimeoutException:
-    print("超时没找我的按钮")
-
-sleep(1)
+sleep(2)
 driver.quit()

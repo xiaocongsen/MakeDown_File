@@ -22,8 +22,8 @@ from appium.webdriver.common.touch_action import TouchAction
 caps = {}
 caps["platformName"] = "Android"
 caps["appium:deviceName"] = "M2012K11AC"
-caps["appium:appPackage"] = "com.qdtevc.teld.app"
-caps["appium:appActivity"] = ".activity.StartActivity"
+caps["appium:appPackage"] = "com.xunmeng.pinduoduo"
+caps["appium:appActivity"] = ".ui.activity.MainFrameActivity"
 caps["appium:platformVersion"] = "13"
 caps["appium:noReset"] = True
 # caps["appium:unicodeKeyboard"] = True
@@ -35,7 +35,6 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
-sleep(3)
 try:                                        
     button = driver.find_element(By.ID, 'xxx')
     button.click()
@@ -45,13 +44,21 @@ except NoSuchElementException:
 
 wait = WebDriverWait(driver, 5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, 'xxx')))
+    button = wait.until(EC.presence_of_element_located((By.XPATH, '//android.widget.FrameLayout[@content-desc="快捷入口列表"]/android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[8]')))
     button.click()
+except TimeoutException:
+    print("超时没找签到按钮")
+
+
+sleep(1)
+driver.quit()
+
+
+
 except StaleElementReferenceException:           # 处理查找到的元素与之前存储的元素不再是同一个对象 重新获取元素
     button = wait.until(EC.presence_of_element_located((By.XPATH, 'xxx')))
     button.click()
-except TimeoutException:
-    print("超时没找我的按钮")
+
 
 try:
     element = wait.until(EC.presence_of_element_located((By.XPATH, 'xx')))
@@ -63,6 +70,3 @@ try:
     action.tap(x=x, y=y).perform()
 except TimeoutException:
     print("超时没找我的按钮")
-
-sleep(1)
-driver.quit()
