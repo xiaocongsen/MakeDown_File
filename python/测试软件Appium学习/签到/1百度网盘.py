@@ -33,43 +33,67 @@ caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
 wait = WebDriverWait(driver, 3)
-
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.TextView[1]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.TextView[1]')))
     button.click()
     print("点击广告跳过按钮")
 except TimeoutException:
     # 处理找不到元素的情况
     print("无法找到广告跳过按钮")
-    
+wait = WebDriverWait(driver, 1, 0.5)
+
 try:
-    button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ImageView')
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.baidu.netdisk:id/new_quick_settings_done')))
     button.click()
-except NoSuchElementException:
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("无法找到暂不开启备份按钮")
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.baidu.netdisk:id/dialog_button_cancel')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("无法找到暂不开启备份按钮 2")
+
+wait = WebDriverWait(driver, 5, 0.5)
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ImageView')))
+    button.click()
+except TimeoutException:
     # 处理找不到元素的情况
     print("无法找到广告关闭")
 
-wait = WebDriverWait(driver, 5, 0.5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.slidingpanelayout.widget.SlidingPaneLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout[5]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.slidingpanelayout.widget.SlidingPaneLayout/android.widget.FrameLayout/android.widget.FrameLayout[2]/android.widget.LinearLayout/android.widget.LinearLayout[5]')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找我的按钮")
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.slidingpanelayout.widget.SlidingPaneLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[1]/android.view.ViewGroup[2]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ImageView')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("无法找到广告关闭2")
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.slidingpanelayout.widget.SlidingPaneLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ScrollView/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout[1]/android.view.ViewGroup[2]')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找待领取积分按钮")
 
-try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[1]')))
-    button.click()          #点击签到领积分
-except TimeoutException:
+# 优化
+sleep(2)
+try:                                        
+    button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[1]')
+    button.click()
+except NoSuchElementException:
     # 处理找不到元素的情况
-    print("超时没找签到领积分按钮")
+    print("无法找到元素")
 
 sleep(2)
 driver.quit()

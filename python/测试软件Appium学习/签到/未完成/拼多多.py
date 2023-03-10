@@ -44,7 +44,7 @@ except NoSuchElementException:
 
 wait = WebDriverWait(driver, 5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '//android.widget.FrameLayout[@content-desc="快捷入口列表"]/android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[8]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="快捷入口列表"]/android.support.v7.widget.RecyclerView/android.widget.RelativeLayout[8]')))
     button.click()
 except TimeoutException:
     print("超时没找签到按钮")
@@ -56,12 +56,12 @@ driver.quit()
 
 
 except StaleElementReferenceException:           # 处理查找到的元素与之前存储的元素不再是同一个对象 重新获取元素
-    button = wait.until(EC.presence_of_element_located((By.XPATH, 'xxx')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, 'xxx')))
     button.click()
 
 
 try:
-    element = wait.until(EC.presence_of_element_located((By.XPATH, 'xx')))
+    element = wait.until(EC.element_to_be_clickable((By.XPATH, 'xx')))
     location = element.location
     size = element.size
     x = location['x'] + size['width'] / 2

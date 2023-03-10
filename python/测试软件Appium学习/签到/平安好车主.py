@@ -33,24 +33,31 @@ caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
 
-
-try:                                        
-    button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.TextView')
-    button.click()     #点击跳过广告
-except NoSuchElementException:
-    # 处理找不到元素的情况
-    print("无法广告跳过按钮")
-
-try:                                        
-    button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ImageView')
-    button.click()
-except NoSuchElementException:
-    # 处理找不到元素的情况
-    print("无法广告关闭按钮")
-
 wait = WebDriverWait(driver, 5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.view.ViewGroup')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.TextView')))
+    button.click()     #点击跳过广告
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("没找到广告跳过按钮")
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.LinearLayout[2]/android.widget.Button[2]')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("没找到位置切换按钮")
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ImageView')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("没找到广告关闭按钮")
+
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout[1]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.view.ViewGroup')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况

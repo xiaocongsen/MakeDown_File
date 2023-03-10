@@ -45,16 +45,16 @@ except NoSuchElementException:
 
 wait = WebDriverWait(driver, 5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, 'xxx')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, 'xxx')))
     button.click()
 except StaleElementReferenceException:           # 处理查找到的元素与之前存储的元素不再是同一个对象 重新获取元素
-    button = wait.until(EC.presence_of_element_located((By.XPATH, 'xxx')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, 'xxx')))
     button.click()
 except TimeoutException:
     print("超时没找我的按钮")
 
 try:
-    element = wait.until(EC.presence_of_element_located((By.XPATH, 'xx')))
+    element = wait.until(EC.element_to_be_clickable((By.XPATH, 'xx')))
     location = element.location
     size = element.size
     x = location['x'] + size['width'] / 2
@@ -63,6 +63,30 @@ try:
     action.tap(x=x, y=y).perform()
 except TimeoutException:
     print("超时没找我的按钮")
+
+
+try:                                                          
+    elements = driver.find_elements(By.ID,'com.alipay.mobile.socialwidget:id/item_name')
+    for i in elements:
+        if '新电途' in i.text:
+            element = i
+            break
+        else:
+            element = None
+        continue
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找聊天记录1")
+
+if element is not None:
+    location = i.location
+    size = i.size
+    x = location['x'] + size['width'] / 2
+    y = location['y'] + size['height'] / 2
+    action = TouchAction(driver)
+    action.tap(x=x, y=y).perform()
+else:
+    print("没找到新电途群,请检查是否账号异常")
 
 sleep(1)
 driver.quit()

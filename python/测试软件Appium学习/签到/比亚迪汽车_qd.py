@@ -25,22 +25,31 @@ driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
 
 wait = WebDriverWait(driver, 5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.ID, 'com.byd.aeri.caranywhere:id/btn_skip')))
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.byd.aeri.caranywhere:id/btn_skip')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况
-    print("超时没找元素")
+    print("超时没找啥？")
 
-button = wait.until(EC.presence_of_element_located((By.ID, 'com.byd.aeri.caranywhere:id/btn_my')))
-# button = driver.find_element(By.ID, 'com.byd.aeri.caranywhere:id/btn_my')
-button.click()
-button = wait.until(EC.presence_of_element_located((By.ID, 'com.byd.aeri.caranywhere:id/tv_set_main_everyday_sign')))
-button.click()
 try:
-    button = wait.until(EC.presence_of_element_located((By.ID, 'com.byd.aeri.caranywhere:id/tv_got_it')))
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.byd.aeri.caranywhere:id/btn_my')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况
-    print("找不到签到按钮，可能已经签到")
+    print("超时没找我的按钮")
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.byd.aeri.caranywhere:id/tv_set_main_everyday_sign')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找每日签到按钮")
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.byd.aeri.caranywhere:id/tv_got_it')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("找不到已签到按钮，可能已经完成签到")
     
 driver.quit()

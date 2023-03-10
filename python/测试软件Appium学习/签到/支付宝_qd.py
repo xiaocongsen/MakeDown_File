@@ -13,6 +13,9 @@ from selenium.webdriver.common.actions.pointer_input import PointerInput
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
+from selenium.common.exceptions import StaleElementReferenceException
+from appium.webdriver.common.touch_action import TouchAction
+
 caps = {}
 caps["platformName"] = "Android"
 caps["appium:deviceName"] = "M2012K11AC"
@@ -32,21 +35,38 @@ driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
 
 wait = WebDriverWait(driver, 5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[4]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[4]')))
     button.click()      #点击消息
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找消息1")
 
-try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ListView/android.widget.RelativeLayout[2]')))
-    button.click()      # 获取并点击新电涂的聊天
+sleep(0.5)
+try:                                                          
+    elements = driver.find_elements(By.ID,'com.alipay.mobile.socialwidget:id/item_name')
+    for i in elements:
+        if '新电途' in i.text:
+            element = i
+            break
+        else:
+            element = None
+        continue
 except TimeoutException:
     # 处理找不到元素的情况
-    print("超时没找新电涂群聊天1")
+    print("超时没找聊天记录1")
+
+if element is not None:
+    location = i.location
+    size = i.size
+    x = location['x'] + size['width'] / 2
+    y = location['y'] + size['height'] / 2
+    action = TouchAction(driver)
+    action.tap(x=x, y=y).perform()
+else:
+    print("没找到新电途群,请检查是否账号异常")
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.LinearLayout/android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.LinearLayout')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.LinearLayout/android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.LinearLayout')))
     button.click()      # 点击聊天中的签到公告
 except TimeoutException:
     # 处理找不到元素的情况
@@ -66,14 +86,14 @@ driver.back()                                                           #返回�
 driver.back()                                                           #返回到支付宝主界面
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
     button.click()      #点击返回到聊天
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找返回到聊天1")
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
     button.click()      #点击返回到主页面
 except TimeoutException:
     # 处理找不到元素的情况
@@ -88,7 +108,7 @@ actions.w3c_actions.pointer_action.release()
 actions.perform()
 
 # try:
-#     button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/com.uc.webview.export.WebView/com.uc.webkit.bc/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[1]/android.view.View[2]')))
+#     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/com.uc.webview.export.WebView/com.uc.webkit.bc/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[1]/android.view.View[2]')))
 #     button.click()      #点击每日签到领积分
 # except TimeoutException:
 #     # 处理找不到元素的情况
@@ -104,14 +124,20 @@ actions.w3c_actions.pointer_action.release()
 actions.perform()
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
+    button.click()      #点击返回到支付宝会员
+except StaleElementReferenceException:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
     button.click()      #点击返回到支付宝会员
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找返回到支付宝会员1")
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
+    button.click()      #点击返回到我的
+except StaleElementReferenceException:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
     button.click()      #点击返回到我的
 except TimeoutException:
     # 处理找不到元素的情况
@@ -122,14 +148,14 @@ except TimeoutException:
 # sleep(1)
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.RelativeLayout[3]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.RelativeLayout[3]')))
     button.click()      #点击设置
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找设置1")
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
     button.click()      #点击切换账号
 except TimeoutException:
     # 处理找不到元素的情况
@@ -143,21 +169,39 @@ actions.w3c_actions.pointer_action.pause(0.1)
 actions.w3c_actions.pointer_action.release()
 actions.perform()
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[4]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[4]')))
     button.click()      #点击消息
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找消息2")
 
-try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.ListView/android.widget.RelativeLayout[2]')))
-    button.click()      # 获取并点击新电涂的聊天
+sleep(0.5)
+try:                                                          
+    elements = driver.find_elements(By.ID,'com.alipay.mobile.socialwidget:id/item_name')
+    for i in elements:
+        if '新电途' in i.text:
+            element = i
+            break
+        else:
+            element = None
+        continue
 except TimeoutException:
     # 处理找不到元素的情况
-    print("超时没找新电涂群聊天2")
+    print("超时没找聊天记录1")
+
+if element is not None:
+    location = i.location
+    size = i.size
+    x = location['x'] + size['width'] / 2
+    y = location['y'] + size['height'] / 2
+    action = TouchAction(driver)
+    action.tap(x=x, y=y).perform()
+else:
+    print("没找到新电途群,请检查是否账号异常")
+
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.LinearLayout/android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.LinearLayout')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.LinearLayout/android.support.v4.view.ViewPager/android.widget.LinearLayout/android.widget.LinearLayout')))
     button.click()      # 点击聊天中的签到公告
 except TimeoutException:
     # 处理找不到元素的情况
@@ -177,14 +221,14 @@ driver.back()                                                           #返回�
 driver.back()                                                           #返回到支付宝主界面
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
     button.click()      #点击返回到聊天
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找返回到聊天2")
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
     button.click()      #点击返回到主页面
 except TimeoutException:
     # 处理找不到元素的情况
@@ -199,7 +243,7 @@ actions.w3c_actions.pointer_action.release()
 actions.perform()
 
 # try:
-#     button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/com.uc.webview.export.WebView/com.uc.webkit.bc/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[1]/android.view.View[2]')))
+#     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout[2]/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/com.uc.webview.export.WebView/com.uc.webkit.bc/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[1]/android.view.View[2]')))
 #     button.click()      #点击每日签到领积分
 # except TimeoutException:
 #     # 处理找不到元素的情况
@@ -215,14 +259,20 @@ actions.w3c_actions.pointer_action.release()
 actions.perform()
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
+    button.click()      #点击返回到支付宝会员
+except StaleElementReferenceException:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
     button.click()      #点击返回到支付宝会员
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找返回到支付宝会员2")
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
+    button.click()      #点击返回到我的
+except StaleElementReferenceException:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
     button.click()      #点击返回到我的
 except TimeoutException:
     # 处理找不到元素的情况
@@ -233,14 +283,14 @@ except TimeoutException:
 # sleep(1)
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.RelativeLayout[3]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.RelativeLayout[3]')))
     button.click()      #点击设置
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找设置2")
 
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
     button.click()      #点击切换账号
 except TimeoutException:
     # 处理找不到元素的情况

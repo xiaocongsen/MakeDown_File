@@ -33,16 +33,17 @@ caps["appium:newCommandTimeout"] = 3600
 caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
-try:                                        
-    button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout[2]/android.widget.LinearLayout[2]/android.view.View')
+wait = WebDriverWait(driver, 5, 0.5)
+try: 
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout[2]/android.widget.LinearLayout[2]/android.view.View')))
     button.click()
-except NoSuchElementException:
+except TimeoutException:
     # 处理找不到元素的情况
     print("无法找到元素 ...这是啥")
 
 wait = WebDriverWait(driver, 5, 0.5)
 try:
-    button = wait.until(EC.presence_of_element_located((By.XPATH, '//androidx.recyclerview.widget.RecyclerView[@content-desc="NewAppcenter"]/android.widget.RelativeLayout[8]')))
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '//androidx.recyclerview.widget.RecyclerView[@content-desc="NewAppcenter"]/android.widget.RelativeLayout[8]')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况
@@ -68,10 +69,9 @@ actions.w3c_actions.pointer_action.pointer_down()
 actions.w3c_actions.pointer_action.pause(0.1)
 actions.w3c_actions.pointer_action.release()
 actions.perform()
-sleep(1)
 
 # try:
-#     element = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[4]')))
+#     element = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[4]')))
 #     location = element.location
 #     size = element.size
 #     x = location['x'] + size['width'] / 2
@@ -84,7 +84,7 @@ sleep(1)
 
 
 # try:
-#     element = wait.until(EC.presence_of_element_located((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[1]/android.view.View[1]/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]/android.view.View[1]/android.view.View[1]')))
+#     element = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View[1]/android.view.View[1]/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]/android.view.View[1]/android.view.View[1]')))
 #     location = element.location
 #     size = element.size
 #     x = location['x'] + size['width'] / 2
@@ -97,7 +97,7 @@ sleep(1)
 
 
 # try:
-#     button = wait.until(EC.presence_of_element_located((By.XPATH, '//android.widget.ImageView[@content-desc="返回"]')))
+#     button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.ImageView[@content-desc="返回"]')))
 #     button.click()
 # except TimeoutException:
 #     # 处理找不到元素的情况
