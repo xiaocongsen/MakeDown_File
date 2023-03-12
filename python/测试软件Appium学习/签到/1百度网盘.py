@@ -87,7 +87,7 @@ except TimeoutException:
     print("超时没找待领取积分按钮")
 
 # 优化
-sleep(2)
+sleep(4)
 try:                                        
     button = driver.find_element(By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View[1]')
     button.click()

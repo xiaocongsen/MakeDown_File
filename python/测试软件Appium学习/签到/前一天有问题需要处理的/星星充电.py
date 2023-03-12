@@ -49,7 +49,7 @@ try:
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找优惠活动按钮")
-
+sleep(0.5)
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout[2]/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View/android.view.View[1]/android.view.View/android.view.View/android.view.View/android.widget.TextView')))
     button.click()          #点击签到
@@ -57,7 +57,6 @@ except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找签到按钮")
 
-# 添加摇一摇的代码
 # 可能需要点击确定
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.RelativeLayout[1]/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.ImageButton')))

@@ -74,7 +74,7 @@ try:
         else:
             element = None
         continue
-except TimeoutException:
+except NoSuchElementException:
     # 处理找不到元素的情况
     print("超时没找聊天记录1")
 

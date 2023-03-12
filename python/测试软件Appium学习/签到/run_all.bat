@@ -6,7 +6,7 @@ set PYTHON=C:\Users\xcs\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFounda
 rem Run each Python script in the current directory
 for %%f in (*.py) do (
     echo Running %%f
-    %PYTHON% "%%f"
+    python.exe "%%f"
 )
 
 pause
