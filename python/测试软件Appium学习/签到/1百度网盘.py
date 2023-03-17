@@ -59,7 +59,7 @@ except TimeoutException:
 wait = WebDriverWait(driver, 5, 0.5)
 
 try:
-    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.ImageView')))
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.baidu.netdisk:id/iv_close')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况

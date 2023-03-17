@@ -41,11 +41,18 @@ except TimeoutException:
     print("超时没找广告跳过按钮")
 
 try:
-    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.ImageView[1]')))
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.baidu.youavideo:id/dialog_home_pop_close_button')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找广告关闭按钮")
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.baidu.youavideo:id/img_close')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找升级关闭按钮")
 
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup[2]/android.widget.ImageView')))
@@ -68,6 +75,7 @@ except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找双签到按钮")
 
+# TODO 太慢了，需要优化
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout[2]/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[4]/android.view.View/android.view.View/android.widget.TextView[2]')))
     button.click()

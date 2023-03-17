@@ -36,6 +36,12 @@ driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
 
 wait = WebDriverWait(driver, 15)
 try:
+    button = wait.until(EC.presence_of_element_located((By.ID, 'com.yek.android.kfc.activitys:id/common_iv_close')))
+    button.click()
+except TimeoutException:
+    print("超时没找广告关闭按钮")
+
+try:
     button = wait.until(EC.presence_of_element_located((By.ID, 'com.yek.android.kfc.activitys:id/homev2_view_me_iv_12')))
     button.click()
 except TimeoutException:
@@ -52,6 +58,7 @@ try:
             y = location['y'] + size['height'] / 2
             action = TouchAction(driver)
             action.tap(x=x, y=y).perform()
+            break
         continue
 except NoSuchElementException:
     # 处理找不到元素的情况

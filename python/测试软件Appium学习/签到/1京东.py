@@ -50,21 +50,20 @@ except TimeoutException:
     print("超时没找主页领京豆按钮")
 
 sleep(8)
-# actions = ActionChains(driver)
-# actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-# actions.w3c_actions.pointer_action.move_to_location(525, 1600) #知道了
-# actions.w3c_actions.pointer_action.pointer_down()
-# actions.w3c_actions.pointer_action.pause(0.1)
-# actions.w3c_actions.pointer_action.release()
-# actions.perform()
-# sleep(1)
-action = TouchAction(driver)
-action.tap(x=534, y=1630).perform()
-sleep(1)            #知道了
-
+print("等待8秒后点击")
 actions = ActionChains(driver)
 actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
-actions.w3c_actions.pointer_action.move_to_location(561, 460)       #签到
+actions.w3c_actions.pointer_action.move_to_location(117, 986)
+actions.w3c_actions.pointer_action.pointer_down()
+actions.w3c_actions.pointer_action.pause(0.1)
+actions.w3c_actions.pointer_action.release()
+actions.perform()   #知道了
+    
+sleep(2)            
+print("点击签到前")
+actions = ActionChains(driver)
+actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+actions.w3c_actions.pointer_action.move_to_location(548, 460)       #签到
 actions.w3c_actions.pointer_action.pointer_down()
 actions.w3c_actions.pointer_action.pause(0.1)
 actions.w3c_actions.pointer_action.release()

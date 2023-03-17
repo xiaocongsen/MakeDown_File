@@ -43,19 +43,31 @@ except TimeoutException:
     print("超时没找我的按钮")
 
 try:
-    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.RelativeLayout[3]')))
-    button.click()      #点击设置
+    element = wait.until(EC.element_to_be_clickable((By.ID, 'com.alipay.mobile.antui:id/right_text')))
+    location = element.location
+    size = element.size
+    x = location['x'] + size['width'] / 2
+    y = location['y'] + size['height'] / 2
+    action = TouchAction(driver)
+    action.tap(x=x, y=y).perform()
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找设置1")
 
-try:
-    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
-    button.click()      #点击切换账号
-except TimeoutException:
-    # 处理找不到元素的情况
-    print("超时没找切换账号1")
-
+# try:
+#     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
+#     button.click()      #点击切换账号
+# except TimeoutException:
+#     # 处理找不到元素的情况
+#     print("超时没找切换账号1")
+sleep(0.5)
+actions = ActionChains(driver)
+actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+actions.w3c_actions.pointer_action.move_to_location(544, 1554)
+actions.w3c_actions.pointer_action.pointer_down()       #点击切换账号
+actions.w3c_actions.pointer_action.pause(0.2)
+actions.w3c_actions.pointer_action.release()
+actions.perform()
 sleep(0.5)
 try:                                                          
     elements = driver.find_elements(By.ID,'com.alipay.mobile.securitybiz:id/layout_container')
@@ -116,31 +128,37 @@ while count > 0:
         actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
         actions.w3c_actions.pointer_action.move_to_location(544, 1293)          #点击签到
         actions.w3c_actions.pointer_action.pointer_down()
-        actions.w3c_actions.pointer_action.pause(0.1)
+        actions.w3c_actions.pointer_action.pause(0.2)
         actions.w3c_actions.pointer_action.release()
         actions.perform()
-
+        
+        sleep(1)
         driver.back()                                                           #返回到聊天界面
-        driver.back()                                                           #返回到支付宝主界面
-
+        
         try:
-            button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
-            button.click()      #点击返回到聊天
+            button = wait.until(EC.element_to_be_clickable((By.ID, 'com.alipay.mobile.antui:id/back_button')))
+            button.click()      #点击返回按钮
         except TimeoutException:
             # 处理找不到元素的情况
-            print("超时没找返回到聊天2")
+            driver.back()
+            print("超时没找返回到聊天主页")
     else:
         print("当前账号没找到新电途群")
-
-
 
     try:
         button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
         button.click()      #点击我的按钮
     except TimeoutException:
         # 处理找不到元素的情况
-        print("超时没找我的按钮")
+        print("超时没找到我的1")
+        driver.back()
+        try:
+            button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.TabWidget/android.widget.FrameLayout[5]')))
+            button.click()      #点击我的按钮
+        except TimeoutException:
+            print("超时没找到我的2")
 
+    sleep(0.5)
     actions = ActionChains(driver)
     actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
     actions.w3c_actions.pointer_action.move_to_location(317, 527)           #点击支付宝会员按钮
@@ -164,7 +182,7 @@ while count > 0:
     actions.w3c_actions.pointer_action.pause(0.1)
     actions.w3c_actions.pointer_action.release()
     actions.perform()
-
+    sleep(3)
     try:
         button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
         button.click()      #点击返回到支付宝会员
@@ -173,9 +191,13 @@ while count > 0:
         button.click()      #点击返回到支付宝会员
     except TimeoutException:
         # 处理找不到元素的情况
+        driver.back()
         print("超时没找返回到支付宝会员1")
-    if count == 1:
+
+    print("count:", count)
+    if count == 0:
         driver.quit()
+        exit()
     try:
         button = wait.until(EC.element_to_be_clickable((By.XPATH, '//android.widget.FrameLayout[@content-desc="返回"]/android.widget.FrameLayout')))
         button.click()      #点击返回到我的
@@ -184,6 +206,7 @@ while count > 0:
         button.click()      #点击返回到我的
     except TimeoutException:
         # 处理找不到元素的情况
+        driver.back()
         print("超时没找返回到我的1")
     # driver.back()                                                           #返回到支付宝会员
     # sleep(1)
@@ -191,19 +214,32 @@ while count > 0:
     # sleep(1)
 
     try:
-        button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.TabHost/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.RelativeLayout[3]')))
-        button.click()      #点击设置
+        element = wait.until(EC.element_to_be_clickable((By.ID, 'com.alipay.mobile.antui:id/right_text')))
+        location = element.location
+        size = element.size
+        x = location['x'] + size['width'] / 2
+        y = location['y'] + size['height'] / 2
+        action = TouchAction(driver)
+        action.tap(x=x, y=y).perform()
     except TimeoutException:
         # 处理找不到元素的情况
         print("超时没找设置1")
 
-    try:
-        button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
-        button.click()      #点击切换账号
-    except TimeoutException:
-        # 处理找不到元素的情况
-        print("超时没找切换账号1")
-    
+    # try:
+    #     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
+    #     button.click()      #点击切换账号
+    # except TimeoutException:
+    #     # 处理找不到元素的情况
+    #     print("超时没找切换账号1")
+
+    sleep(0.5)
+    actions = ActionChains(driver)
+    actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
+    actions.w3c_actions.pointer_action.move_to_location(544, 1554)
+    actions.w3c_actions.pointer_action.pointer_down()       #点击切换账号
+    actions.w3c_actions.pointer_action.pause(0.2)
+    actions.w3c_actions.pointer_action.release()
+    actions.perform()
     sleep(0.5)
     elements = driver.find_elements(By.ID,'com.alipay.mobile.securitybiz:id/layout_container')
     continue

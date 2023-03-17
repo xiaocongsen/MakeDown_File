@@ -43,5 +43,5 @@ except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找签到领积分按钮")
 
-sleep(3.5)
+sleep(5)
 driver.quit()

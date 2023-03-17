@@ -15,7 +15,9 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
-from selenium.common.exceptions import StaleElementReferenceException 
+from selenium.common.exceptions import StaleElementReferenceException
+from appium.webdriver.common.touch_action import TouchAction
+
 caps = {}
 caps["platformName"] = "Android"
 caps["appium:deviceName"] = "M2012K11AC"
@@ -34,13 +36,26 @@ caps["appium:connectHardwareKeyboard"] = True
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
 
 wait = WebDriverWait(driver, 8)
-try:       
-    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.widget.RelativeLayout/android.view.ViewGroup[1]/androidx.recyclerview.widget.RecyclerView/android.view.ViewGroup[2]/androidx.viewpager.widget.ViewPager/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout[6]')))
-    button.click()
+try:                        
+    element = wait.until(EC.presence_of_element_located((By.ID, 'com.jd.jrapp:id/home_header_grid_title')))
+    try:                                                          
+        elements = driver.find_elements(By.ID ,'com.jd.jrapp:id/home_header_grid_title')
+        for i in elements:
+            if '签到' == i.text:
+                location = i.location
+                size = i.size
+                x = location['x'] + size['width'] / 2
+                y = location['y'] + size['height'] / 2
+                action = TouchAction(driver)
+                action.tap(x=x, y=y).perform()
+                break
+            continue
+    except NoSuchElementException:
+        # 处理找不到元素的情况
+        print("超时没找签到按钮1")
 except TimeoutException:
     # 处理找不到元素的情况
-    print("超时没找签到按钮")
-print("点击签到按钮")
+    print("超时没找签到按钮2")
 
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View[7]/android.view.View/android.view.View[1]')))
@@ -55,7 +70,6 @@ try:
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找签到领金贴按钮")
-print("点击签到领金贴按钮")
 sleep(2)
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View[1]/android.view.View/android.view.View[1]')))
@@ -63,7 +77,6 @@ try:
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找关闭立即查看按钮")
-print("点击关闭立即查看按钮")
 
 sleep(1)
 try:
@@ -75,15 +88,17 @@ except StaleElementReferenceException:
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找双签领金豆按钮")
-print("点击双签领金豆按钮")
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[5]/android.view.View[2]/android.view.View/android.view.View[2]')))
     button.click()          #点击立即领取
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找立即领取按钮")
-print("点击立即领取按钮")
+    
 try:
+    button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[5]/android.view.View[1]')))
+    button.click()          #点击关闭已领取按钮
+except StaleElementReferenceException:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[5]/android.view.View[1]')))
     button.click()          #点击关闭已领取按钮
 except TimeoutException:
@@ -120,11 +135,11 @@ except TimeoutException:
 #     # 处理找不到元素的情况
 #     print("超时没找返回按钮3")
 driver.back()
-sleep(0.5)
+sleep(1)
 driver.back()
-sleep(0.5)
+sleep(1)
 driver.back()
-sleep(0.5)
+sleep(1)
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.widget.RelativeLayout[5]')))
     button.click()          #点击我的
