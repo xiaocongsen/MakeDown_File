@@ -32,7 +32,7 @@ caps["appium:connectHardwareKeyboard"] = True
 
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
 
-wait = WebDriverWait(driver, 5)
+wait = WebDriverWait(driver, 8)
 try:                                                               
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[1]/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout/android.view.ViewGroup/androidx.recyclerview.widget.RecyclerView/android.widget.LinearLayout[1]/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.widget.LinearLayout[9]')))
     button.click()
@@ -43,5 +43,13 @@ except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找签到领积分按钮")
 
-sleep(5)
+try:                                                               
+    element = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/androidx.appcompat.widget.LinearLayoutCompat/android.widget.FrameLayout/android.widget.RelativeLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[4]/android.view.View/android.view.View/android.view.View')))
+    print(element.text)
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("和包签到失败")
+
+# TODO 获取签到成功还是失败
+sleep(1)
 driver.quit()

@@ -40,13 +40,21 @@ except TimeoutException:
     # 处理找不到元素的情况
     print("无法找到广告跳过按钮")
 
-# TODO 0316 无法找到元素
+
+try:
+    button = wait.until(EC.element_to_be_clickable((By.ID, 'com.sgcc.evs.echarge:id/iv_close')))
+    button.click()
+except TimeoutException:
+    # 处理找不到元素的情况
+    print("超时没找广告关闭按钮")
+
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.LinearLayout/android.widget.LinearLayout[5]')))
     button.click()
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找我的按钮")
+
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.view.ViewGroup/android.widget.ScrollView/android.widget.LinearLayout/android.widget.LinearLayout[1]/android.widget.RelativeLayout')))
     button.click()

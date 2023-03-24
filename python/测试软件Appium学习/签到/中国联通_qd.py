@@ -45,5 +45,5 @@ try:
 except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找签到按钮")
-sleep(3)
+sleep(5)
 driver.quit()

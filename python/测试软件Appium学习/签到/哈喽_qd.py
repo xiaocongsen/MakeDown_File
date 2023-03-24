@@ -53,6 +53,6 @@ except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找福利中心按钮")
 	
-
-sleep(3)
+# TODO 查找签到是否成功
+sleep(5)
 driver.quit()

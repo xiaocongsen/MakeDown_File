@@ -45,25 +45,28 @@ except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找我的按钮")
 
-try:
-    element = wait.until(EC.element_to_be_clickable((By.ID, 'com.alipay.mobile.antui:id/right_text')))
-    location = element.location
-    size = element.size
-    x = location['x'] + size['width'] / 2
-    y = location['y'] + size['height'] / 2
-    action = TouchAction(driver)
-    action.tap(x=x, y=y).perform()
-except StaleElementReferenceException:
-    element = wait.until(EC.element_to_be_clickable((By.ID, 'com.alipay.mobile.antui:id/right_text')))
-    location = element.location
-    size = element.size
-    x = location['x'] + size['width'] / 2
-    y = location['y'] + size['height'] / 2
-    action = TouchAction(driver)
-    action.tap(x=x, y=y).perform()
-except TimeoutException:
-    # 处理找不到元素的情况
-    print("超时没找设置1")
+# try:
+#     element = wait.until(EC.element_to_be_clickable((By.ID, 'com.alipay.mobile.antui:id/right_text')))
+#     location = element.location
+#     size = element.size
+#     x = location['x'] + size['width'] / 2
+#     y = location['y'] + size['height'] / 2
+#     action = TouchAction(driver)
+#     action.tap(x=x, y=y).perform()
+# except StaleElementReferenceException:
+#     element = wait.until(EC.element_to_be_clickable((By.ID, 'com.alipay.mobile.antui:id/right_text')))
+#     location = element.location
+#     size = element.size
+#     x = location['x'] + size['width'] / 2
+#     y = location['y'] + size['height'] / 2
+#     action = TouchAction(driver)
+#     action.tap(x=x, y=y).perform()
+# except TimeoutException:
+#     # 处理找不到元素的情况
+#     print("超时没找设置1")
+sleep(1)
+action = TouchAction(driver)
+action.tap(x=1000, y=150).perform()
 
 # try:
 #     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.TextView[1]')))
@@ -71,7 +74,7 @@ except TimeoutException:
 # except TimeoutException:
 #     # 处理找不到元素的情况
 #     print("超时没找切换账号1")
-sleep(0.5)
+sleep(1)
 actions = ActionChains(driver)
 actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
 actions.w3c_actions.pointer_action.move_to_location(544, 1554)
@@ -84,8 +87,8 @@ try:
     elements = driver.find_elements(By.ID,'com.alipay.mobile.securitybiz:id/layout_container')
     count = len(elements)
 except NoSuchElementException:
-    # 处理找不到元素的情况
     print("没有找到账号列表")
+
 print("账号列表数量:",count)
 index = count - 1
 while count > 0:
@@ -243,7 +246,8 @@ while count > 0:
     #     # 处理找不到元素的情况
     #     print("超时没找切换账号1")
 
-    sleep(0.5)
+
+    sleep(1)
     actions = ActionChains(driver)
     actions.w3c_actions = ActionBuilder(driver, mouse=PointerInput(interaction.POINTER_TOUCH, "touch"))
     actions.w3c_actions.pointer_action.move_to_location(544, 1554)

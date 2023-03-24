@@ -92,8 +92,12 @@ try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[5]/android.view.View[2]/android.view.View/android.view.View[2]')))
     button.click()          #点击立即领取
 except TimeoutException:
-    # 处理找不到元素的情况
-    print("超时没找立即领取按钮")
+    print("超时没找弹窗的立即领取按钮")
+    try:
+        button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[2]/android.view.View/android.view.View[3]')))
+        button.click()          #点击立即领取
+    except TimeoutException:
+        print("超时没找点击领奖按钮")
     
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[5]/android.view.View[1]')))
