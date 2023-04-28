@@ -6,8 +6,96 @@
     ERR_error_string(ret,szErrMsg); //获取错误信息 格式： error:errld:库:函数:原因
 ```
 
+# 调试SSL数据解密
+``` c
+void my_ssl_keylog_callback(const SSL *ssl, const char *line) {
+    /* 将密钥日志写入指定的文件中 */
+    char* str = getenv("MYSSLKEYLOGFILE");
+    if(str != NULL)
+    {
+        FILE *fp = fopen("./sslkeylogfile.txt", "a");
+        fprintf(fp, "%s\n", line);
+        fclose(fp);
+    }
+}
+
+SSL_CTX_set_keylog_callback(ctx, my_ssl_keylog_callback);   //设置回调函数 用于记录SSL密钥 给wireshark解密
+```
+
 # tls1.3 关键代码记录
 ```c
+const SSL_METHOD *tlsv1_3_method(void) 
+{ 
+    static const SSL_METHOD tlsv1_3_method_data= 
+    { 
+        TLS1_3_VERSION, 
+        0, 
+        SSL_OP_NO_TLSv1_3, 
+        tls1_new, 
+        tls1_clear, 
+        tls1_free, 
+        ossl_statem_accept, 
+        ossl_statem_connect, 
+        ssl3_read, 
+        ssl3_peek,
+        ssl3_write, 
+        ssl3_shutdown, 
+        ssl3_renegotiate, 
+        ssl3_renegotiate_check, 
+        ssl3_read_bytes, 
+        ssl3_write_bytes, 
+        ssl3_dispatch_alert, 
+        ssl3_ctrl, 
+        ssl3_ctx_ctrl, 
+        ssl3_get_cipher_by_char, 
+        ssl3_put_cipher_by_char, 
+        ssl3_pending, 
+        ssl3_num_ciphers,
+        ssl3_get_cipher, 
+        tls1_default_timeout, 
+        &TLSv1_3_enc_data,
+        ssl_undefined_void_function, 
+        ssl3_callback_ctrl, 
+        ssl3_ctx_callback_ctrl,             
+        }; 
+        return &tlsv1_3_method_data; 
+}
+const SSL_METHOD *tlsv1_3_server_method(void) 
+{ 
+    static const SSL_METHOD tlsv1_3_server_method_data= 
+    { 
+        TLS1_3_VERSION, 
+        0, 
+        SSL_OP_NO_TLSv1_3, 
+        tls1_new, 
+        tls1_clear, 
+        tls1_free, 
+        ossl_statem_accept, 
+        ssl_undefined_function,
+        ssl3_read,
+        ssl3_peek, 
+        ssl3_write, 
+        ssl3_shutdown, 
+        ssl3_renegotiate, 
+        ssl3_renegotiate_check, 
+        ssl3_read_bytes, 
+        ssl3_write_bytes, 
+        ssl3_dispatch_alert, 
+        ssl3_ctrl, 
+        ssl3_ctx_ctrl, 
+        ssl3_get_cipher_by_char, 
+        ssl3_put_cipher_by_char, 
+        ssl3_pending, 
+        ssl3_num_ciphers,
+        ssl3_get_cipher, 
+        tls1_default_timeout, 
+        &TLSv1_3_enc_data, 
+        ssl_undefined_void_function, 
+        ssl3_callback_ctrl, 
+        ssl3_ctx_callback_ctrl, 
+        }; 
+        return &tlsv1_3_server_method_data; 
+}
 const SSL_METHOD *tlsv1_3_client_method(void) 
 { 
     static const SSL_METHOD tlsv1_3_client_method_data= { 
@@ -37,33 +125,106 @@ const SSL_METHOD *tlsv1_3_client_method(void)
         ssl3_get_cipher,
         tls1_default_timeout, 
         &TLSv1_3_enc_data,                  //tls1.3的独有结构
-        ssl_undefined_void_function, 
-        ssl3_callback_ctrl, 
+        ssl_undefined_void_function,        
+        ssl3_callback_ctrl,                 
         ssl3_ctx_callback_ctrl, 
         }; 
         return &tlsv1_3_client_method_data; 
 }
 
 SSL3_ENC_METHOD const TLSv1_3_enc_data = {
-    tls13_enc,
-    tls1_mac,
-    tls13_setup_key_block,
-    tls13_generate_master_secret,
-    tls13_change_cipher_state,
-    tls13_final_finish_mac,
-    TLS_MD_CLIENT_FINISH_CONST, TLS_MD_CLIENT_FINISH_CONST_SIZE,
-    TLS_MD_SERVER_FINISH_CONST, TLS_MD_SERVER_FINISH_CONST_SIZE,
-    tls13_alert_code,
-    tls13_export_keying_material,
-    SSL_ENC_FLAG_SIGALGS | SSL_ENC_FLAG_SHA256_PRF,
-    ssl3_set_handshake_header,
-    tls_close_construct_packet,
-    ssl3_handshake_write
+    tls13_enc,                                                      //用于加密 SSL/TLS 协议中的记录数据
+    tls1_mac,                                                       //用于计算 SSL/TLS 协议中的 MAC 值
+    tls13_setup_key_block,                                          //用于设置 SSL/TLS 协议中的密钥块
+    tls13_generate_master_secret,                                   //用于生成 SSL/TLS 协议中的主密钥
+    tls13_change_cipher_state,                                      //用于切换 SSL/TLS 协议中的密码状态
+    tls13_final_finish_mac,                                         //用于计算 SSL/TLS 协议中的最终消息认证码
+    TLS_MD_CLIENT_FINISH_CONST, TLS_MD_CLIENT_FINISH_CONST_SIZE,    //一个指向客户端 Finished 消息标签的指针和标签长度；
+    TLS_MD_SERVER_FINISH_CONST, TLS_MD_SERVER_FINISH_CONST_SIZE,    //一个指向服务器端 Finished 消息标签的指针和标签长度；
+    tls13_alert_code,                                               //用于将 TLS 协议中的警告代码转换为 SSL/TLS 协议中的警告代码
+    tls13_export_keying_material,                                   //用于导出 SSL/TLS 协议中的密钥材料
+    SSL_ENC_FLAG_SIGALGS | SSL_ENC_FLAG_SHA256_PRF,                 //表示协议版本的要求
+    ssl3_set_handshake_header,                                    //用于设置 SSL/TLS 协议中的握手消息头
+    tls_close_construct_packet,                                    //用于关闭 SSL/TLS 协议中的构造数据包
+    ssl3_handshake_write                                        //用于设置 SSL/TLS 协议中握手消息的头部
 };
 
+
+//Diffie-Hellman生成密钥对的结构
+const EVP_PKEY_ASN1_METHOD ecx25519_asn1_meth = {
+    EVP_PKEY_X25519,
+    EVP_PKEY_X25519,
+    0,
+    "X25519",
+    "OpenSSL X25519 algorithm",
+
+    ecx_pub_decode,
+    ecx_pub_encode,
+    ecx_pub_cmp,
+    ecx_pub_print,
+
+    ecx_priv_decode,
+    ecx_priv_encode,
+    ecx_priv_print,
+
+    ecx_size,
+    ecx_bits,
+    ecx_security_bits,
+
+    0, 0, 0, 0,
+    ecx_cmp_parameters,
+    0, 0,
+
+    ecx_free,
+    ecx_ctrl,
+    NULL,
+    NULL,
+
+    NULL,
+    NULL,
+    NULL,
+
+    NULL,
+    NULL,
+    NULL,
+
+    ecx_set_priv_key,
+    ecx_set_pub_key,
+    ecx_get_priv_key,
+    ecx_get_pub_key,
+};
+
+
+EVP_PKEY_get_raw_private_key
+
+
+add_key_share 添加tls1.3握手密钥扩展
 ```
+``` c
+//打印EVP_PKEY的密钥内容
+void print_private_key(EVP_PKEY *pkey) {
+    BIO *bio = BIO_new(BIO_s_mem());
+    if (!bio) {
+        // Handle error
+        return;
+    }
 
+    if (PEM_write_bio_PrivateKey(bio, pkey, NULL, NULL, 0, NULL, NULL) != 1) {
+        // Handle error
+        BIO_free(bio);
+        return;
+    }
 
+    char *buffer;
+    long length = BIO_get_mem_data(bio, &buffer);
+    if (length > 0) {
+        printf("Private key:\n%s\n", buffer);
+    }
+
+    BIO_free(bio);
+}
+```
+SSL_DEBUG 用于SSL打印调试信息
 
 tls1.3 流程
     客户端通过调用注册函数ossl_statem_connect->tls_construct_client_hello函数创建client hello包给服务端
