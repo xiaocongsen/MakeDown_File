@@ -1,4 +1,7 @@
-# SSL出错源码位置获取
+# openssl相关问题
+
+## SSL出错源码位置获取
+
 ``` c
     SSL_load_error_strings();           //加载错误码对应信息
     unsigned long ret = ERR_get_error(); //获取错误码
@@ -6,7 +9,8 @@
     ERR_error_string(ret,szErrMsg); //获取错误信息 格式： error:errld:库:函数:原因
 ```
 
-# 调试SSL数据解密
+## 调试SSL数据解密
+
 ``` c
 void my_ssl_keylog_callback(const SSL *ssl, const char *line) {
     /* 将密钥日志写入指定的文件中 */
@@ -22,7 +26,33 @@ void my_ssl_keylog_callback(const SSL *ssl, const char *line) {
 SSL_CTX_set_keylog_callback(ctx, my_ssl_keylog_callback);   //设置回调函数 用于记录SSL密钥 给wireshark解密
 ```
 
-# tls1.3 关键代码记录
+```c
+#include<openssl/err.h>
+int log_print_cb(const char *str, size_t len, void *u)
+{
+    DDM_Log(DDM_LOG_CERT, DDM_LOG_LEVEL_ERROR, "[xxxxxxxxxxxxxxxxxxx][%s]",str);
+    return 1;
+}
+ERR_print_errors_cb(log_print_cb, NULL);
+```
+
+## PKCS12_parse解析弱加密算法证书报错问题
+    
+1. 错误信息：
+    4037D21AC17F0000:error:0308010C:digital envelope routines:inner_evp_generic_fetch:unsupported:crypto/evp/evp_fetch.c:342:Global default library context, Algorithm (RC2-40-CBC : 0), Properties ()
+2. 方案：修改代码，main函数一开始加载legacy provider
+（1）调用OSSL_PROVIDER_set_default_search_path接口设置legacy.so所在目录，第一个参数为NULL 也可以setenv("OPENSSL_MODULES", "/path/to/your/openssl/lib/ossl-modules", 1);
+（2）调用OSSL_PROVIDER_load接口加载default provider，第一个参数为NULL，第二个参数为"default"，并保存返回值
+（3）调用OSSL_PROVIDER_load接口加载legacy provider，第一个参数为NULL，第二个参数为"legacy"，并保存返回值
+（4）进程退出时调用OSSL_PROVIDER_unload卸载legacy provider和default provider
+
+## SSL_Read出现SSL_ERROR_SSL
+
+- 详细错误信息:00570000:error:0A000126:SSL routines:ssl3_read_n:unexpected eof while reading:ssl\record\rec_layer_s3.c:304:
+- 表明在SSL/TLS通信过程中遇到了一个未预期的EOF（End Of File），即文件结束符。在SSL/TLS上下文中，这通常意味着对端在数据传输过程中突然关闭了连接，而接收方在尝试读取更多数据时发现连接已经关闭，没有更多的数据可读。
+
+## tls1.3 关键代码记录
+
 ```c
 const SSL_METHOD *tlsv1_3_method(void) 
 { 
@@ -200,6 +230,7 @@ EVP_PKEY_get_raw_private_key
 
 add_key_share 添加tls1.3握手密钥扩展
 ```
+
 ``` c
 //打印EVP_PKEY的密钥内容
 void print_private_key(EVP_PKEY *pkey) {
@@ -224,6 +255,7 @@ void print_private_key(EVP_PKEY *pkey) {
     BIO_free(bio);
 }
 ```
+
 SSL_DEBUG 用于SSL打印调试信息
 
 tls1.3 流程

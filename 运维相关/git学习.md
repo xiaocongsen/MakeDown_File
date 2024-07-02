@@ -63,7 +63,18 @@
     commitId 可以通过git log输出    (HEAD -> master)为当前所在分支
 
 
+## git的http切ssh
+    git remote -v                                       # 查看当前远程仓库配置
+    git remote remove origin                            # 如果origin是HTTP形式，先删除它
+    git remote add origin git@hostname:path/to/repo.git # 添加新的SSH形式的远程仓库地址
 
+
+## git 本地添加私钥
+    eval "$(ssh-agent -s)"
+    ssh-add ~/.ssh/id_rsa
+
+## git 设置本地追踪远程分支
+    git branch --set-upstream-to=origin/xcs xcs-local
 
 # git问题处理
 ## git clone报错 server certificate verification failed. CAfile: none CRLfile: none

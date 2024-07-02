@@ -36,9 +36,9 @@ caps["appium:connectHardwareKeyboard"] = True
 driver = webdriver.Remote("http://127.0.0.1:4723/wd/hub", caps)
 
 wait = WebDriverWait(driver, 8)
-try:                        
+try:
     element = wait.until(EC.presence_of_element_located((By.ID, 'com.jd.jrapp:id/home_header_grid_title')))
-    try:                                                          
+    try:
         elements = driver.find_elements(By.ID ,'com.jd.jrapp:id/home_header_grid_title')
         for i in elements:
             if '签到' == i.text:
@@ -98,7 +98,7 @@ except TimeoutException:
         button.click()          #点击立即领取
     except TimeoutException:
         print("超时没找点击领奖按钮")
-    
+
 try:
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/com.jd.jrapp.library.framework.base.slide.SlideFrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.widget.FrameLayout/com.tencent.tbs.core.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View[5]/android.view.View[1]')))
     button.click()          #点击关闭已领取按钮

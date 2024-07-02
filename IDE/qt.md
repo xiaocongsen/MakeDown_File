@@ -1,10 +1,23 @@
-#   解决Could not start process "make" qmake_all问题
+# qt问题集合
+
+## 解决Could not start process "make" qmake_all问题
+
     sudo apt install build-essential
 
-# Qt error: /usr/bin/ld: cannot find -lGL: No such file or directory
+## Qt error: /usr/bin/ld: cannot find -lGL: No such file or directory
+
     sudo apt install mesa-common-dev libglu1-mesa-dev
 
-# qt Ui工程
+## error   Qt5Config.cmake qt5-config.cmake
+
+    sudo apt-get install qtbase5-dev
+
+## error   Qt5LinguistToolsConfig.cmake  qt5linguisttools-config.cmake
+
+    sudo apt-get install qttools5-dev
+
+## qt Ui工程
+
 ```pro
 QT += gui core widgets network
 TEMPLATE = app
@@ -133,3 +146,10 @@ LIBS += -LD:\Qt5.12.8\5.12.8\mingw73_32\lib -lQt5Widgets -lQt5Gui -lQt5Core -lQt
 }
 
 ```
+
+## qt加载库问题调试
+
+    export QT_DEBUG_PLUGINS=1       开启调试信息输出
+    然后运行qt程序
+
+    unset QT_DEBUG_PLUGINS  取消调试信息

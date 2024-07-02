@@ -68,3 +68,14 @@ E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are y
 # ubuntu pushd: not found
     pushd命令在bash环境
     执行sudo dpkg-reconfigure dash 命令，将dash设置为No
+
+
+
+# libc.so.6: version 'GLIBC_2.25' not found
+
+    使用的高版本gcc提供的新函数，系统版本过低不支持该函数
+    可以使用
+    objdump -T legacy.so | grep GLIBC_
+    strings legacy.so | grep GLIBC_
+    nm -D legacy.so | grep GLIBC_
+    来查看该so库是因为哪个函数导致的问题

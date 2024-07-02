@@ -61,7 +61,7 @@ except TimeoutException:
     # 处理找不到元素的情况
     print("超时没找签到按钮")
 
-try:
+try:        #TODO 这里可能需要修改
     button = wait.until(EC.element_to_be_clickable((By.XPATH, '/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.RelativeLayout/android.widget.RelativeLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View/android.view.View/android.view.View[3]/android.view.View[2]/android.view.View/android.widget.TextView[8]')))
     button.click()
 except TimeoutException:

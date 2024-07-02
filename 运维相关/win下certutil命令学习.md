@@ -15,3 +15,11 @@ certutil -delstore -user my "<证书的序列号>"
 
 # 输出证书信息
 certutil -dump filename.crt
+
+
+# 输出机器上所有CSP API的加密供应程序
+certutil -csplist
+
+# CNG加密供应程序
+    Microsoft Software Key Storage Provider
+    Microsoft Smart Card Key Storage Provider
