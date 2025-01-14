@@ -26,6 +26,9 @@ sudo route del -net 10.20.0.0/16 gw 192.168.127.2   删除路由
 sudo route add -net 192.168.79.0/24 metric 1000 dev ens33
 sudo route del -net 192.168.79.0/24 metric 1000 dev ens33
 
+du -h --max-depth=1 --one-file-system .         //查看文件大小
+
+awk -F'/' '{print $1}' input.txt > output.txt       //将文件名中的/替换为空
 
 uname -m    输出当前系统的硬件架构信息
 uname -r    输出内核版本号

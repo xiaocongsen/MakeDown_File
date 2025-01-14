@@ -16,7 +16,7 @@
 
 ## Linux虚拟机和Windows物理机之间无法复制粘贴
 
-    sudo apt-get autoremove open-vm-tools   #卸载已有的工具
-    sudo apt-get install open-vm-tools      #安装open-vm-tools
+    sudo apt-get autoremove open-vm-tools       #卸载已有的工具
+    sudo apt-get install open-vm-tools          #安装open-vm-tools
     sudo apt-get install open-vm-tools-desktop  #安装open-vm-tools-desktop
 

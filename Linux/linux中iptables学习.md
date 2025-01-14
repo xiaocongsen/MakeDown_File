@@ -159,3 +159,9 @@ sudo iptables -L -n -t nat
 # NFQUEUE    udp  --  0.0.0.0/0            0.0.0.0/0            NFQUEUE balance 101:105
 # DROP       all  --  0.0.0.0/0           !127.0.0.1                                        //DROP表示拒绝匹配到这个规则的数据包，不让数据包通过防火墙 除非来自127.0.0.1
 ```
+
+
+
+
+sudo iptables -L -n -v --line-numbers   //查看iptables规则
+sudo iptables -t nat -L -n             //查看nat规则

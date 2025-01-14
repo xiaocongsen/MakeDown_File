@@ -36,6 +36,75 @@ int log_print_cb(const char *str, size_t len, void *u)
 ERR_print_errors_cb(log_print_cb, NULL);
 ```
 
+```c
+#include <crypto/bio_local.h>
+static int my_sock_write(BIO *b, const char *in, int inl)
+{
+    int ret = 0;
+    char tmp[inl*2];
+    clear_socket_error();
+    for(int i =0; i < inl; i++)
+    {
+        sprintf(tmp+i*2,"%02X",((unsigned char*)in)[i]);
+    }
+    DDM_Log(DDM_LOG_NETC, DDM_LOG_LEVEL_INFO, "[my_sock_write data:%s,len:%d]",tmp,inl);
+    ret = writesocket(b->num, in, inl);
+    BIO_clear_retry_flags(b);
+    if (ret <= 0) {
+        if (BIO_sock_should_retry(ret))
+            BIO_set_retry_write(b);
+    }
+    return ret;
+}
+
+static int my_sock_read(BIO *b, char *out, int outl)
+{
+    int ret = 0;
+
+    if (out != NULL) {
+        clear_socket_error();
+            ret = readsocket(b->num, out, outl);
+        BIO_clear_retry_flags(b);
+        if (ret <= 0) {
+            if (BIO_sock_should_retry(ret))
+                BIO_set_retry_read(b);
+            else if (ret == 0)
+                b->flags |= BIO_FLAGS_IN_EOF;
+        }
+    }
+    return ret;
+}
+
+
+//SSL_new后给ssl设置fd的时候添加注册函数 可以使用自定义的读写函数
+    BIO *bio = NULL;
+    const BIO_METHOD *base = BIO_s_socket();
+    BIO_METHOD *m = BIO_meth_new(BIO_TYPE_SOCKET, "socket");
+
+    if (m == NULL) {
+        return 0;
+    }
+    // int (*write) (BIO *, const char *, int)
+    (void)BIO_meth_set_write(m, my_sock_write);
+    (void)BIO_meth_set_read(m, my_sock_read);
+    (void)BIO_meth_set_ctrl(m, BIO_meth_get_ctrl(base));
+    (void)BIO_meth_set_create(m, BIO_meth_get_create(base));
+    (void)BIO_meth_set_puts(m, BIO_meth_get_puts(base));
+    (void)BIO_meth_set_destroy(m, BIO_meth_get_destroy(base));
+
+    bio = BIO_new(m);
+    if (bio == NULL) {
+        BIO_meth_free(m);
+        return 0;
+    }
+
+    (void)BIO_set_fd(bio, pstConInf->uiFd, BIO_NOCLOSE);
+    SSL_set_bio(ssl, bio, bio);
+    BIO_set_data(bio, ssl);
+```
+
+
+
 ## PKCS12_parse解析弱加密算法证书报错问题
     
 1. 错误信息：

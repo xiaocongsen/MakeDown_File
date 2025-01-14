@@ -69,6 +69,10 @@
     git remote add origin git@hostname:path/to/repo.git # 添加新的SSH形式的远程仓库地址
 
 
+## 修改git远程域名
+    git remote set-url origin git@new-gitlab:mboxd/mboxd-daemon.git
+
+
 ## git 本地添加私钥
     eval "$(ssh-agent -s)"
     ssh-add ~/.ssh/id_rsa
